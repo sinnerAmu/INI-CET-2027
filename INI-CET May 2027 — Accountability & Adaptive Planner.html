@@ -1,0 +1,3524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#23272E" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="INI-CET 2027" />
+  <meta name="description" content="INI-CET May 2027 Accountability & Adaptive Schedule Planner with BTR Video Allotter, 6-Phase GT Engine, and Ebbinghaus Curve." />
+  <title>INI-CET May 2027 — Accountability &amp; Adaptive Planner</title>
+
+  <!-- Inline SVG Favicon & Apple Touch Icon (PWA Ready — Zero External Asset Dependencies) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2323272E'/%3E%3Crect x='3' y='3' width='58' height='58' rx='14' fill='none' stroke='%23414854' stroke-width='2'/%3E%3Cpath d='M14 40 Q24 18 34 31 T50 18' fill='none' stroke='%236CB6D9' stroke-width='4.5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='18' r='4.2' fill='%237CB896'/%3E%3Ctext x='14' y='53' font-family='system-ui,sans-serif' font-size='11' font-weight='700' fill='%23E6E8EC'%3EINI27%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%2323272E'/%3E%3Cpath d='M36 112 Q66 48 96 86 T146 48' fill='none' stroke='%236CB6D9' stroke-width='12' stroke-linecap='round'/%3E%3Ccircle cx='146' cy='48' r='11' fill='%237CB896'/%3E%3Ctext x='32' y='150' font-family='system-ui,sans-serif' font-size='28' font-weight='700' fill='%23E6E8EC'%3EINI-CET%3C/text%3E%3C/svg%3E" />
+
+  <!-- Inter Font with Seamless System Fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================================
+       1. MID-TONE TWILIGHT SLATE DESIGN TOKENS (LOW-GLARE DAY & NIGHT)
+       ========================================================================= */
+    :root {
+      --bg: #23272E;
+      --surface: #2A2F37;
+      --elevated: #323842;
+      --border: #414854;
+      --border-soft: rgba(65, 72, 84, 0.55);
+      --text: #E6E8EC;
+      --muted: #9AA3B2;
+
+      --sage: #7CB896;
+      --sage-bg: rgba(124, 184, 150, 0.14);
+      --amber: #E5B567;
+      --amber-bg: rgba(229, 181, 103, 0.14);
+      --cyan: #6CB6D9;
+      --cyan-bg: rgba(108, 182, 217, 0.14);
+      --terracotta: #DF7A6B;
+      --terracotta-bg: rgba(223, 122, 107, 0.15);
+      --lavender: #B39DDB;
+      --lavender-bg: rgba(179, 157, 219, 0.15);
+
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: ui-monospace, 'SFMono-Regular', 'JetBrains Mono', Menlo, Consolas, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.5;
+      padding-bottom: max(28px, env(safe-area-inset-bottom, 28px));
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Subtle low-glare scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    /* =========================================================================
+       2. LAYOUT CONTAINER & COMPACT STICKY HEADER
+       ========================================================================= */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    header.app-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(35, 39, 46, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: max(10px, env(safe-area-inset-top, 10px)) 0 10px;
+    }
+
+    .header-row-1 {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 14px;
+    }
+
+    .brand-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 15.5px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .countdown-label {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .header-row-2 {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    /* Pill Badges */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+    .pill-sage { background: var(--sage-bg); color: var(--sage); border-color: rgba(124,184,150,0.32); }
+    .pill-amber { background: var(--amber-bg); color: var(--amber); border-color: rgba(229,181,103,0.34); }
+    .pill-cyan { background: var(--cyan-bg); color: var(--cyan); border-color: rgba(108,182,217,0.34); }
+    .pill-terracotta { background: var(--terracotta-bg); color: var(--terracotta); border-color: rgba(223,122,107,0.36); }
+    .pill-lavender { background: var(--lavender-bg); color: var(--lavender); border-color: rgba(179,157,219,0.36); }
+    .pill-muted { background: var(--elevated); color: var(--muted); border-color: var(--border); }
+
+    /* Buttons (Touch-Friendly Targets) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 36px;
+      padding: 7px 13px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 500;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { background: var(--elevated); border-color: #566070; }
+    .btn:active { transform: scale(0.98); }
+    .btn-sm { min-height: 32px; padding: 5px 10px; font-size: 12px; border-radius: 9px; }
+    .btn-xs { min-height: 28px; padding: 4px 8px; font-size: 11px; border-radius: 7px; }
+
+    .btn-sage { background: var(--sage-bg); color: var(--sage); border-color: rgba(124,184,150,0.36); }
+    .btn-sage:hover { background: rgba(124,184,150,0.23); }
+    .btn-amber { background: var(--amber-bg); color: var(--amber); border-color: rgba(229,181,103,0.36); }
+    .btn-amber:hover { background: rgba(229,181,103,0.23); }
+    .btn-cyan { background: var(--cyan-bg); color: var(--cyan); border-color: rgba(108,182,217,0.36); }
+    .btn-cyan:hover { background: rgba(108,182,217,0.23); }
+    .btn-terracotta { background: var(--terracotta-bg); color: var(--terracotta); border-color: rgba(223,122,107,0.38); }
+    .btn-terracotta:hover { background: rgba(223,122,107,0.24); }
+    .btn-lavender { background: var(--lavender-bg); color: var(--lavender); border-color: rgba(179,157,219,0.38); }
+    .btn-lavender:hover { background: rgba(179,157,219,0.24); }
+
+    /* Date Navigator */
+    .date-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 3px;
+      max-width: 100%;
+    }
+
+    .date-nav-btn {
+      width: 34px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .date-nav-btn:hover { background: var(--elevated); color: var(--text); }
+
+    .date-picker-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .date-picker-wrap:hover { background: var(--elevated); }
+    .date-picker-wrap input[type="date"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .date-today-chip {
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+    .date-today-chip:hover { background: var(--cyan-bg); }
+
+    /* 5 Scrollable Pill Navigation Tabs (>= 44px touch target on mobile) */
+    nav.main-tabs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      max-width: 100%;
+      padding: 2px 0;
+    }
+    nav.main-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 7px 13px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .tab-btn.active {
+      background: var(--elevated);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .tab-count {
+      padding: 1px 6px;
+      border-radius: 99px;
+      font-size: 10.5px;
+      background: var(--cyan-bg);
+      color: var(--cyan);
+      font-family: var(--font-mono);
+    }
+
+    /* =========================================================================
+       3. RESPONSIVE WORKSPACE GRIDS (DESKTOP / TABLET / MOBILE)
+       ========================================================================= */
+    main.workspace {
+      padding: 20px 0 36px;
+    }
+
+    /* Desktop >= 1024px: Main Column + 336px Sticky Right Sidebar */
+    .today-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 336px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 124px;
+      min-width: 0;
+    }
+
+    /* Tablet (640px – 1023px): Single main column + neat 2-col/3-col sidebar grid below */
+    @media (max-width: 1023px) {
+      .today-grid {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .sidebar .sidebar-span-tablet {
+        grid-column: span 2;
+      }
+    }
+
+    @media (min-width: 860px) and (max-width: 1023px) {
+      .sidebar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .sidebar .sidebar-span-tablet {
+        grid-column: span 1;
+      }
+    }
+
+    /* Mobile (< 640px): Pure single column, 44px touch targets */
+    @media (max-width: 639px) {
+      .container { padding: 0 12px; }
+      .header-row-2 { gap: 8px; }
+      .date-nav { width: 100%; justify-content: space-between; }
+      .tab-btn { min-height: 44px; padding: 8px 14px; font-size: 13px; }
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .sidebar .sidebar-span-tablet { grid-column: auto; }
+      .day-title { font-size: 18px !important; }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .card-flush {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+    .stack-sm { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .grid-7 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+
+    @media (max-width: 900px) {
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-7 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 639px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-7 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .card { padding: 14px; }
+    }
+
+    .label-caps {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .day-title {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .day-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Banners */
+    .banner {
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .banner-lavender { background: var(--lavender-bg); border-color: rgba(179,157,219,0.4); }
+    .banner-terracotta { background: var(--terracotta-bg); border-color: rgba(223,122,107,0.4); }
+    .banner-amber { background: var(--amber-bg); border-color: rgba(229,181,103,0.38); }
+    .banner-cyan { background: var(--cyan-bg); border-color: rgba(108,182,217,0.36); }
+    .banner-title { font-size: 13.5px; font-weight: 600; }
+    .banner-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    /* =========================================================================
+       4. TIMELINE ROWS (DESKTOP SIDE-BY-SIDE -> MOBILE STACKED TIME BADGE)
+       ========================================================================= */
+    .timeline-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      transition: background 0.15s ease;
+    }
+    .timeline-row:last-child { border-bottom: none; }
+    .timeline-row.study-row { cursor: pointer; }
+    .timeline-row.study-row:hover { background: rgba(255, 255, 255, 0.025); }
+    .timeline-row.is-done { opacity: 0.62; }
+
+    .timeline-row.fixed-row {
+      padding: 10px 18px;
+      background: rgba(35, 39, 46, 0.48);
+      opacity: 0.72;
+    }
+
+    .row-time-col {
+      width: 114px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .row-time-text {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .fixed-row .row-time-text { font-size: 11.5px; color: var(--muted); font-weight: 500; }
+    .row-dur-text {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .row-accent-bar {
+      width: 3px;
+      align-self: stretch;
+      border-radius: 99px;
+      flex-shrink: 0;
+      min-height: 22px;
+    }
+    .bar-sage { background: var(--sage); }
+    .bar-amber { background: var(--amber); }
+    .bar-cyan { background: var(--cyan); }
+    .bar-terracotta { background: var(--terracotta); }
+    .bar-lavender { background: var(--lavender); }
+    .bar-muted { background: var(--border); }
+
+    .row-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .row-header-mobile {
+      display: none;
+    }
+
+    .row-title-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .row-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .fixed-row .row-title { font-size: 12.5px; font-weight: 500; color: var(--muted); }
+    .is-done .row-title { text-decoration: line-through; color: var(--muted); }
+
+    .row-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.48;
+      word-break: break-word;
+    }
+
+    .check-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      color: transparent;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.15s ease;
+    }
+    .is-done .check-circle {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: var(--bg);
+    }
+
+    /* Mobile Stacked Timeline Layout (< 640px): Time badge cleanly above title! */
+    @media (max-width: 639px) {
+      .timeline-row {
+        flex-direction: column;
+        gap: 8px;
+        padding: 13px 14px;
+        border-left: 3px solid transparent;
+      }
+      .timeline-row.accent-border-sage { border-left-color: var(--sage); }
+      .timeline-row.accent-border-amber { border-left-color: var(--amber); }
+      .timeline-row.accent-border-cyan { border-left-color: var(--cyan); }
+      .timeline-row.accent-border-terracotta { border-left-color: var(--terracotta); }
+      .timeline-row.accent-border-lavender { border-left-color: var(--lavender); }
+      .timeline-row.accent-border-muted { border-left-color: var(--border); }
+
+      .row-time-col, .row-accent-bar, .desktop-check {
+        display: none !important;
+      }
+      .row-header-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+      }
+      .row-content {
+        width: 100%;
+      }
+    }
+
+    /* Inline Ebbinghaus Due List Inside Evening Revision Block */
+    .ebb-inline-box {
+      margin-top: 10px;
+      background: rgba(35, 39, 46, 0.72);
+      border: 1px solid rgba(108, 182, 217, 0.3);
+      border-radius: 10px;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ebb-inline-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: rgba(50, 56, 66, 0.6);
+      font-size: 12px;
+    }
+
+    .ebb-inline-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .ebb-inline-name {
+      font-weight: 500;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .curfew-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 13px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(42, 47, 55, 0.72);
+      border: 1px solid rgba(223, 122, 107, 0.38);
+      font-size: 12.5px;
+    }
+
+    /* =========================================================================
+       5. PROGRESS BARS, FORMS, LISTS, SVG CHARTS & CALENDARS
+       ========================================================================= */
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 99px;
+      background: var(--bg);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.25s ease;
+    }
+
+    .metric-big {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .pacer-clock {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .segmented {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 2px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .seg-btn {
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .seg-btn.active {
+      background: var(--elevated);
+      color: var(--text);
+    }
+
+    .input, .select {
+      width: 100%;
+      min-height: 40px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-size: 13.5px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .input:focus, .select:focus { border-color: var(--cyan); }
+    .input-sm { min-height: 34px; padding: 6px 9px; font-size: 12.5px; border-radius: 8px; }
+
+    .list-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .list-row:last-child { border-bottom: none; }
+    .list-row:hover { background: rgba(255,255,255,0.02); }
+
+    /* Responsive SVG Container (Zero Clipping on Any Screen Width) */
+    .svg-box {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      overflow: hidden;
+    }
+    .svg-box svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Mini Calendars (December & February Blocked Days) */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 5px;
+    }
+    .cal-dow {
+      text-align: center;
+      font-size: 10.5px;
+      color: var(--muted);
+      padding-bottom: 4px;
+    }
+    .cal-day {
+      min-height: 36px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+    }
+    .cal-day:hover { background: var(--elevated); border-color: var(--muted); }
+    .cal-day.is-sprint { border-color: rgba(229,181,103,0.48); }
+    .cal-day.is-blocked {
+      background: var(--terracotta);
+      border-color: var(--terracotta);
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    /* =========================================================================
+       6. MODALS (SCROLLABLE CENTERED / MOBILE BOTTOM SHEET) & TOASTS
+       ========================================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(15, 18, 22, 0.74);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .modal-card {
+      width: calc(100vw - 24px);
+      max-width: 540px;
+      max-height: 90dvh;
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48);
+    }
+
+    @media (max-width: 639px) {
+      .modal-backdrop {
+        align-items: flex-end;
+        padding: 10px;
+      }
+      .modal-card {
+        border-radius: 18px 18px 14px 14px;
+        padding: 18px 16px;
+      }
+    }
+
+    .radio-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 11px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .radio-card:hover { border-color: var(--amber); }
+
+    .toast-stack {
+      position: fixed;
+      bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      right: 16px;
+      left: 16px;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      max-width: 340px;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--sage);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 11px;
+      font-size: 12.5px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.38);
+      transition: opacity 0.25s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Stack -->
+  <div id="toast-stack" class="toast-stack"></div>
+
+  <!-- =========================================================================
+       COMPACT STICKY HEADER
+       ========================================================================= -->
+  <header class="app-header">
+    <div class="container">
+      <!-- Row 1: Brand, Phase Pill, Countdown & Adjust Button -->
+      <div class="header-row-1">
+        <div class="brand-cluster">
+          <span class="brand-title">INI-CET May 2027</span>
+          <span id="hdr-phase-pill" class="pill pill-amber">Phase 1 · BTR Sprint</span>
+          <span id="hdr-countdown" class="countdown-label mono">180d to May 23</span>
+        </div>
+
+        <div class="header-controls">
+          <button class="btn btn-sm btn-amber" onclick="openModal('modal-adjust')">
+            ⚡ Adjust Today
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 2: Date Navigator + 5 Scrollable Pill Tabs -->
+      <div class="header-row-2">
+        <div class="date-nav">
+          <button class="date-nav-btn" onclick="shiftDate(-1)" aria-label="Previous Day">◀</button>
+          <label class="date-picker-wrap mono">
+            <span id="hdr-date-label">Tue, Nov 24, 2026</span>
+            <input type="date" id="hdr-date-input" min="2026-11-24" max="2027-05-23" onchange="selectDate(this.value)" />
+          </label>
+          <button class="date-today-chip" onclick="jumpToToday()">Today</button>
+          <button class="date-nav-btn" onclick="shiftDate(1)" aria-label="Next Day">▶</button>
+        </div>
+
+        <nav class="main-tabs" role="tablist">
+          <button id="tab-today" class="tab-btn active" onclick="switchTab('today')">Today</button>
+          <button id="tab-btr" class="tab-btn" onclick="switchTab('btr')">BTR Videos</button>
+          <button id="tab-ebbinghaus" class="tab-btn" onclick="switchTab('ebbinghaus')">
+            Ebbinghaus <span id="tab-ebb-count" class="tab-count">0</span>
+          </button>
+          <button id="tab-gt" class="tab-btn" onclick="switchTab('gt')">Targets &amp; GTs</button>
+          <button id="tab-blocked" class="tab-btn" onclick="switchTab('blocked')">Blocked &amp; Backup</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN WORKSPACE
+       ========================================================================= -->
+  <main class="workspace">
+    <div class="container">
+
+      <!-- =================================================================== -->
+      <!-- TAB 1: TODAY (INTERACTIVE TIMELINE + 3 QUIET SIDEBAR CARDS)         -->
+      <!-- =================================================================== -->
+      <section id="panel-today" class="today-grid">
+        <!-- Main Column -->
+        <div class="stack">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+            <div>
+              <h1 id="today-heading" class="day-title">Tuesday, November 24, 2026</h1>
+              <p id="today-sub" class="day-sub">Phase 1 · BTR Video Sprint · Morning OPD only</p>
+            </div>
+            <span id="today-blocks-badge" class="mono" style="font-size:12px;color:var(--muted);">0 / 8 blocks</span>
+          </div>
+
+          <!-- Context Banner (Muggup / GT Day / Blocked Day) -->
+          <div id="today-ctx-banner" class="banner hidden">
+            <div>
+              <div id="ctx-title" class="banner-title"></div>
+              <div id="ctx-desc" class="banner-desc"></div>
+            </div>
+            <button id="ctx-action" class="btn btn-sm hidden"></button>
+          </div>
+
+          <!-- Extra Work Adjustment Banner -->
+          <div id="today-adj-banner" class="banner banner-amber hidden">
+            <div style="font-size:12.5px;" id="adj-msg"></div>
+            <button class="btn btn-xs btn-amber" onclick="resetTodayAdjustment()">Reset Today</button>
+          </div>
+
+          <!-- Daily Adaptive Timeline -->
+          <div id="today-timeline" class="card-flush"></div>
+
+          <!-- 11:00 PM Hard Curfew Lockdown Banner -->
+          <div class="curfew-bar">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="mono" style="color:var(--terracotta);font-weight:700;">23:00</span>
+              <span style="font-weight:600;">11:00 PM — Hard Digital Curfew &amp; Sleep Lockdown</span>
+            </div>
+            <span style="font-size:11.5px;color:var(--muted);">No screens · Rescheduler never pushes past 11:00 PM</span>
+          </div>
+        </div>
+
+        <!-- 3 Quiet Sidebar Cards (Right Col on Desktop, 2/3-Col Grid on Tablet, Stacked on Mobile) -->
+        <aside class="sidebar">
+          <!-- Sidebar Card 1: 45m PYQ / 20m Review Toggle Pacer -->
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span class="label-caps" style="color:var(--cyan);">Evening PYQ Pacer</span>
+              <span id="pacer-pill" class="mono" style="font-size:11.5px;color:var(--cyan);">Q1 / 50 · 54s/Q</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0 12px;">
+              <div id="pacer-clock" class="pacer-clock mono">45:00</div>
+              <div class="segmented">
+                <button id="pacer-m45" class="seg-btn active" onclick="setPacerMode(45)">45m PYQ</button>
+                <button id="pacer-m20" class="seg-btn" onclick="setPacerMode(20)">20m Rev</button>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-sm btn-cyan" style="flex:1;" onclick="startPacer()">Start</button>
+              <button class="btn btn-sm" onclick="pausePacer()">Pause</button>
+              <button class="btn btn-sm" onclick="resetPacer()">Reset</button>
+            </div>
+          </div>
+
+          <!-- Sidebar Card 2: GT Readiness (98/145 Baseline -> Target 140-155+ / 165-180) -->
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span class="label-caps" style="color:var(--terracotta);">GT Readiness</span>
+              <span id="side-gt-cadence" class="mono" style="font-size:11px;color:var(--muted);">Baseline Anchor</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;">
+              <span id="side-gt-score" class="metric-big mono">98 / 145</span>
+              <span id="side-gt-acc" class="mono" style="font-size:12px;color:var(--amber);">67.6% · 82.3 net</span>
+            </div>
+
+            <div class="progress-track">
+              <div id="side-gt-bar" class="progress-fill" style="width:65%;background:var(--terracotta);"></div>
+            </div>
+
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:5px;font-size:12px;">
+              <div style="display:flex;justify-content:space-between;gap:8px;">
+                <span style="color:var(--muted);">Target Goal</span>
+                <span class="mono" style="color:var(--sage);">140–155+ C · 165–180 att</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;gap:8px;">
+                <span style="color:var(--muted);">Next Scheduled GT</span>
+                <span id="side-next-gt" class="mono" style="color:var(--text);">Dec 15 (GT #1)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Card 3: BTR / Phase & Today Progress -->
+          <div class="card sidebar-span-tablet">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span id="side-phase-lbl" class="label-caps" style="color:var(--amber);">BTR Sprint Progress</span>
+              <span id="side-phase-meta" class="mono" style="font-size:11.5px;color:var(--amber);">21d to Dec 15</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;">
+              <span id="side-phase-big" class="metric-big mono">0%</span>
+              <span id="side-phase-sub" class="mono" style="font-size:12px;color:var(--muted);">0 / 6,517m</span>
+            </div>
+
+            <div class="progress-track">
+              <div id="side-phase-bar" class="progress-fill" style="width:0%;background:var(--amber);"></div>
+            </div>
+
+            <div id="side-btr-controls" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                <span style="font-size:12px;color:var(--muted);">BTR Speed</span>
+                <div class="segmented">
+                  <button class="seg-btn spd-100" onclick="setSpeed(1.0)">1.0x</button>
+                  <button class="seg-btn spd-125" onclick="setSpeed(1.25)">1.25x</button>
+                  <button class="seg-btn spd-150" onclick="setSpeed(1.5)">1.5x</button>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--muted);">Required pace</span>
+                <span id="side-btr-pace" class="mono">248 real m/d</span>
+              </div>
+            </div>
+
+            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border-soft);display:flex;justify-content:space-between;font-size:12px;">
+              <span style="color:var(--muted);">Today completed</span>
+              <span id="side-today-hrs" class="mono" style="color:var(--sage);">0.0 / 10.5h</span>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 2: BTR VIDEOS (27 MODULES = 6,517 MINS BEFORE DEC 15)           -->
+      <!-- =================================================================== -->
+      <section id="panel-btr" class="stack hidden">
+        <div class="card stack">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+            <div>
+              <h2 style="font-size:17px;font-weight:700;">BTR Video Sprint (Nov 24 – Dec 14, 2026)</h2>
+              <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">
+                All 27 modules (6,517 mins = 108h 37m). Completing any module auto-enrolls it into your Ebbinghaus Curve at D+1.
+              </p>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:12px;color:var(--muted);">Speed:</span>
+              <div class="segmented">
+                <button class="seg-btn spd-100" onclick="setSpeed(1.0)">1.0x</button>
+                <button class="seg-btn spd-125" onclick="setSpeed(1.25)">1.25x</button>
+                <button class="seg-btn spd-150" onclick="setSpeed(1.5)">1.5x</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-4">
+            <div style="background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:12px;">
+              <div class="label-caps">Total Library</div>
+              <div id="btr-k-total" class="mono" style="font-size:18px;font-weight:700;margin-top:4px;">6,517m</div>
+              <div id="btr-k-hm" class="mono" style="font-size:11px;color:var(--muted);">108h 37m · 27 mods</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:12px;">
+              <div class="label-caps">Watched / Left</div>
+              <div id="btr-k-watched" class="mono" style="font-size:18px;font-weight:700;color:var(--sage);margin-top:4px;">0m</div>
+              <div id="btr-k-left" class="mono" style="font-size:11px;color:var(--muted);">6,517m left</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:12px;">
+              <div class="label-caps">Real Time Left</div>
+              <div id="btr-k-real" class="mono" style="font-size:18px;font-weight:700;color:var(--amber);margin-top:4px;">86h 54m</div>
+              <div id="btr-k-real-sub" class="mono" style="font-size:11px;color:var(--muted);">at 1.25x speed</div>
+            </div>
+            <div style="background:var(--bg);border:1px solid var(--border-soft);border-radius:12px;padding:12px;">
+              <div class="label-caps">Deadline Pace</div>
+              <div id="btr-k-pace" class="mono" style="font-size:18px;font-weight:700;margin-top:4px;">248m / d</div>
+              <div id="btr-k-days" class="mono" style="font-size:11px;color:var(--muted);">21 active sprint days</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="progress-track" style="margin-top:0;">
+              <div id="btr-master-bar" class="progress-fill" style="width:0%;background:var(--amber);"></div>
+            </div>
+            <div id="btr-pace-warn" class="hidden" style="margin-top:8px;font-size:12px;color:var(--terracotta);"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;">
+          <div class="segmented">
+            <button id="btr-v-mods" class="seg-btn active" onclick="setBtrView('modules')">All 27 Modules</button>
+            <button id="btr-v-days" class="seg-btn" onclick="setBtrView('daily')">Day-by-Day Allotment</button>
+          </div>
+          <span style="font-size:12px;color:var(--muted);">Daily slots: 330m MWF · 360m TThS · 465m Sun</span>
+        </div>
+
+        <div id="btr-modules-wrap" class="stack"></div>
+        <div id="btr-daily-wrap" class="card-flush hidden"></div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: EBBINGHAUS CURVE (LIVE SVG + TOPIC DECK)                     -->
+      <!-- =================================================================== -->
+      <section id="panel-ebbinghaus" class="stack hidden">
+        <div class="grid-2" style="align-items:stretch;">
+          <!-- Live Responsive Ebbinghaus Retention Curve SVG -->
+          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+              <div>
+                <h2 style="font-size:16px;font-weight:700;">Ebbinghaus Forgetting Curve</h2>
+                <p style="font-size:12px;color:var(--muted);margin-top:2px;">
+                  Intervals: <span class="mono" style="color:var(--cyan);">D+1 → D+3 → D+7 → D+14 → D+30</span>
+                </p>
+              </div>
+              <div style="display:flex;gap:10px;font-size:11px;">
+                <span style="color:var(--cyan);">● Spaced Recall</span>
+                <span style="color:var(--terracotta);">--- Decay</span>
+              </div>
+            </div>
+            <div id="ebb-svg-wrap" class="svg-box"></div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);">
+              <span id="ebb-stat-active">0 active topics</span>
+              <span id="ebb-stat-mastered" style="color:var(--sage);">0 mastered (D+30+)</span>
+            </div>
+          </div>
+
+          <!-- Add Custom Topic Form -->
+          <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;">
+            <div>
+              <h2 style="font-size:16px;font-weight:700;">+ Log Studied Topic</h2>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">
+                Add textbook chapters, volatile tables, or GT error-log concepts. They surface automatically in your Evening Ebbinghaus slot.
+              </p>
+            </div>
+            <form onsubmit="handleAddEbb(event)" class="stack-sm">
+              <div>
+                <label class="label-caps" style="display:block;margin-bottom:5px;">Topic Name</label>
+                <input type="text" id="ebb-f-topic" class="input" required placeholder="e.g., Glomerulonephritis EM/IF Patterns" />
+              </div>
+              <div class="grid-2" style="gap:10px;">
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Subject</label>
+                  <select id="ebb-f-subject" class="select">
+                    <option value="Pathology">Pathology</option>
+                    <option value="Pharmacology">Pharmacology</option>
+                    <option value="Physiology">Physiology</option>
+                    <option value="Anatomy">Anatomy</option>
+                    <option value="Biochemistry">Biochemistry</option>
+                    <option value="Microbiology">Microbiology</option>
+                    <option value="FMT">FMT</option>
+                    <option value="Medicine">Medicine</option>
+                    <option value="Surgery">Surgery</option>
+                    <option value="OBGY">OBGY</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="PSM">PSM</option>
+                    <option value="Short Subjects">Short Subjects</option>
+                    <option value="GT Error Log">GT Error Log</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Study Date</label>
+                  <input type="date" id="ebb-f-date" class="input mono" required />
+                </div>
+              </div>
+              <button type="submit" class="btn btn-cyan" style="width:100%;margin-top:4px;">Add to Ebbinghaus Curve (D+1)</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Ebbinghaus Filter & List -->
+        <div class="card-flush">
+          <div style="padding:13px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;">
+            <div class="segmented">
+              <button id="ef-due" class="seg-btn active" onclick="setEbbFilter('due')">Due Today</button>
+              <button id="ef-upcoming" class="seg-btn" onclick="setEbbFilter('upcoming')">Upcoming 7d</button>
+              <button id="ef-mastered" class="seg-btn" onclick="setEbbFilter('mastered')">Mastered</button>
+              <button id="ef-all" class="seg-btn" onclick="setEbbFilter('all')">All</button>
+            </div>
+            <span id="ebb-list-meta" class="mono" style="font-size:12px;color:var(--muted);"></span>
+          </div>
+          <div id="ebb-list-wrap"></div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 4: UPCOMING TARGETS & GTs (98/145 BASELINE + ROADMAP)           -->
+      <!-- =================================================================== -->
+      <section id="panel-gt" class="stack hidden">
+        <!-- GT Trend SVG Chart + Logger -->
+        <div class="grid-2" style="align-items:start;">
+          <div class="card stack">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+              <div>
+                <h2 style="font-size:16px;font-weight:700;">GT Trend &amp; Readiness</h2>
+                <p style="font-size:12px;color:var(--muted);margin-top:2px;">Anchored at NEET PG 2026 baseline: 98/145 (67.6% · 82.3 net)</p>
+              </div>
+              <div style="display:flex;gap:10px;font-size:11px;">
+                <span style="color:var(--cyan);">● Attempts</span>
+                <span style="color:var(--sage);">● Corrects</span>
+              </div>
+            </div>
+            <div id="gt-svg-wrap" class="svg-box"></div>
+            <div id="gt-history-wrap" style="border-top:1px solid var(--border-soft);"></div>
+          </div>
+
+          <div class="card stack">
+            <div>
+              <h2 style="font-size:16px;font-weight:700;">Log Grand Test Score</h2>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">Auto-calculates wrong answers, accuracy %, and INI-CET net (+1 / −⅓).</p>
+            </div>
+            <form onsubmit="handleAddGT(event)" class="stack-sm">
+              <div class="grid-2" style="gap:10px;">
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">GT Name</label>
+                  <input type="text" id="gt-f-label" class="input" required placeholder="e.g., GT #1 (Marrow)" />
+                </div>
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Date Taken</label>
+                  <input type="date" id="gt-f-date" class="input mono" required />
+                </div>
+              </div>
+              <div class="grid-3" style="gap:10px;">
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Solved (/200)</label>
+                  <input type="number" id="gt-f-attempts" class="input mono" min="1" max="200" required placeholder="165" oninput="updateGtPreview()" />
+                </div>
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Corrects</label>
+                  <input type="number" id="gt-f-correct" class="input mono" min="0" max="200" required placeholder="128" oninput="updateGtPreview()" />
+                </div>
+                <div>
+                  <label class="label-caps" style="display:block;margin-bottom:5px;">Net / Acc</label>
+                  <input type="text" id="gt-f-preview" class="input mono" readonly placeholder="115.7 · 78%" style="color:var(--sage);" />
+                </div>
+              </div>
+              <div>
+                <label class="label-caps" style="display:block;margin-bottom:5px;">Weakest 2 Topics / Error Pattern</label>
+                <input type="text" id="gt-f-weak" class="input" placeholder="e.g., Renal Pathology EM + Biostatistics Likelihood Ratios" />
+              </div>
+              <button type="submit" class="btn btn-terracotta" style="width:100%;margin-top:4px;">Save GT Entry</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Weekly Textbook/PYQ Checklist + Custom Personal Targets -->
+        <div class="grid-2" style="align-items:start;">
+          <div class="card stack">
+            <div>
+              <h2 style="font-size:16px;font-weight:700;">Active Textbook &amp; PYQ Targets</h2>
+              <p id="wk-target-sub" style="font-size:12px;color:var(--muted);margin-top:2px;"></p>
+            </div>
+            <div id="wk-checklist-wrap" class="stack-sm"></div>
+          </div>
+
+          <div class="card stack">
+            <div>
+              <h2 style="font-size:16px;font-weight:700;">Personal Upcoming Targets</h2>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">Track custom milestones (e.g., Robbins Inflammation tables, BTR Ophtha notes).</p>
+            </div>
+            <form onsubmit="handleAddTarget(event)" style="display:flex;gap:8px;">
+              <input type="text" id="target-f-input" class="input input-sm" placeholder="Add a custom target..." required />
+              <button type="submit" class="btn btn-sm btn-sage">Add</button>
+            </form>
+            <div id="custom-targets-wrap" class="stack-sm"></div>
+          </div>
+        </div>
+
+        <!-- Full 6-Phase Roadmap -->
+        <div class="card stack">
+          <div>
+            <h2 style="font-size:16px;font-weight:700;">6-Phase INI-CET Roadmap (Nov 24, 2026 – May 23, 2027)</h2>
+            <p style="font-size:12px;color:var(--muted);margin-top:2px;">Tap any phase to jump directly to its start date.</p>
+          </div>
+          <div id="phases-grid" class="grid-3"></div>
+        </div>
+
+        <!-- 14-Day Rolling Schedule Preview -->
+        <div class="card stack">
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+            <div>
+              <h2 style="font-size:16px;font-weight:700;">14-Day Upcoming Horizon</h2>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">Tap any day card to inspect or edit that date's timeline.</p>
+            </div>
+            <span id="horizon-range" class="mono" style="font-size:12px;color:var(--muted);"></span>
+          </div>
+          <div id="horizon-grid" class="grid-7"></div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 5: BLOCKED DAYS & BACKUP (DEC/FEB MAX 7 + PHASE 4 + JSON SYNC)  -->
+      <!-- =================================================================== -->
+      <section id="panel-blocked" class="stack hidden">
+        <!-- December & February Calendars -->
+        <div class="card stack">
+          <div>
+            <h2 style="font-size:17px;font-weight:700;">Unavoidable Distraction Days (Strict Max 7 / Month)</h2>
+            <p style="font-size:12.5px;color:var(--muted);margin-top:3px;">
+              Pre-seeded with editable placeholders — tap any date to toggle. Blocked days switch to zero-guilt 20-min Ebbinghaus maintenance and automatically shift scheduled GTs forward.
+            </p>
+          </div>
+
+          <div class="grid-2">
+            <!-- December 2026 -->
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="font-size:14px;font-weight:600;">December 2026</span>
+                <span id="dec-cap-pill" class="pill pill-terracotta mono">3 / 7</span>
+              </div>
+              <div class="cal-grid" style="margin-bottom:4px;">
+                <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div>
+                <div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+              </div>
+              <div id="cal-dec" class="cal-grid"></div>
+              <div style="font-size:11px;color:var(--muted);margin-top:8px;">Amber outline = BTR Sprint window (Dec 1–14)</div>
+            </div>
+
+            <!-- February 2027 -->
+            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="font-size:14px;font-weight:600;">February 2027</span>
+                <span id="feb-cap-pill" class="pill pill-terracotta mono">3 / 7</span>
+              </div>
+              <div class="cal-grid" style="margin-bottom:4px;">
+                <div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div>
+                <div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div>
+              </div>
+              <div id="cal-feb" class="cal-grid"></div>
+              <div style="font-size:11px;color:var(--muted);margin-top:8px;">Any 3-day GT on a blocked Feb day shifts cleanly forward</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settings, Overflow Bank & Cross-Device JSON Backup -->
+        <div class="grid-2" style="align-items:stretch;">
+          <!-- Phase 4 Cadence + Overflow Bank -->
+          <div class="card stack">
+            <div>
+              <h3 style="font-size:15px;font-weight:700;">Phase 4 GT Cadence (Mar 16 – Apr 27)</h3>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">Switch Revision Bridge between Every 3 Days (default) or Every 2 Days.</p>
+              <div class="segmented" style="margin-top:10px;">
+                <button id="p4-cad-3" class="seg-btn active" onclick="setPhase4Step(3)">Every 3 Days (Default)</button>
+                <button id="p4-cad-2" class="seg-btn" onclick="setPhase4Step(2)">Every 2 Days (Intense)</button>
+              </div>
+            </div>
+
+            <div style="padding-top:14px;border-top:1px solid var(--border-soft);">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <h3 style="font-size:15px;font-weight:700;">Overflow Bank (Sunday Buffer)</h3>
+                <span id="ov-total-pill" class="mono" style="font-size:12px;color:var(--amber);">0m banked</span>
+              </div>
+              <div id="ov-list-wrap" style="margin-top:8px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:5px;"></div>
+              <button class="btn btn-xs btn-sage" style="margin-top:10px;" onclick="clearOverflow()">Clear Overflow Bank</button>
+            </div>
+          </div>
+
+          <!-- Cross-Device Backup & Reset -->
+          <div class="card stack">
+            <div>
+              <h3 style="font-size:15px;font-weight:700;">Device Sync &amp; JSON Backup</h3>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">
+                Export your progress as a JSON file to move seamlessly between your phone, tablet, and laptop.
+              </p>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="btn btn-sm btn-cyan" style="flex:1;" onclick="exportJSON()">Download JSON Backup</button>
+              <label class="btn btn-sm" style="flex:1;cursor:pointer;">
+                Import JSON Backup
+                <input type="file" accept=".json" onchange="importJSON(event)" class="hidden" />
+              </label>
+            </div>
+            <button class="btn btn-sm" onclick="copyJSON()">Copy Backup JSON to Clipboard</button>
+
+            <div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--border-soft);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-size:12px;color:var(--muted);">Reset all local data to Nov 24 defaults</span>
+              <button id="btn-reset-all" class="btn btn-xs btn-terracotta" onclick="handleResetDefaults()">Reset Defaults</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       MODAL: EXTRA WORK / ADJUST TODAY AUTO-RESCHEDULER
+       ========================================================================= -->
+  <div id="modal-adjust" class="modal-backdrop hidden" onclick="backdropClose(event, 'modal-adjust')">
+    <div class="modal-card stack">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+        <div>
+          <h3 style="font-size:16px;font-weight:700;">Adjust Today (Extra Work / OPD Delay)</h3>
+          <p style="font-size:12px;color:var(--muted);margin-top:3px;">
+            Protects your BTR videos, Protected 45m+20m PYQ, Ebbinghaus revision, and hard 11:00 PM curfew.
+          </p>
+        </div>
+        <button class="btn btn-xs" onclick="closeModal('modal-adjust')" aria-label="Close">✕</button>
+      </div>
+
+      <div class="stack-sm">
+        <label class="label-caps">Extra Delay / Duty Minutes</label>
+        <div class="grid-4" style="gap:8px;">
+          <button type="button" class="btn btn-sm mono" onclick="setAdjMins(30)">30m</button>
+          <button type="button" class="btn btn-sm mono" onclick="setAdjMins(60)">60m</button>
+          <button type="button" class="btn btn-sm mono" onclick="setAdjMins(90)">90m</button>
+          <button type="button" class="btn btn-sm mono" onclick="setAdjMins(120)">120m</button>
+        </div>
+        <input type="number" id="adj-mins" class="input mono" min="15" max="240" step="15" value="60" />
+
+        <label class="label-caps" style="margin-top:6px;">Strategy</label>
+        <label class="radio-card">
+          <input type="radio" name="adj-mode" value="compress" checked style="margin-top:3px;accent-color:var(--amber);" />
+          <div>
+            <div style="font-size:13px;font-weight:600;">1. Compress Today (Curfew-Safe)</div>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">
+              Trims lower-priority night buffer &amp; pre-sleep slots first while preserving BTR videos, Protected 45m+20m PYQ, and Ebbinghaus reviews before 11:00 PM.
+            </div>
+          </div>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="adj-mode" value="bank" style="margin-top:3px;accent-color:var(--amber);" />
+          <div>
+            <div style="font-size:13px;font-weight:600;">2. Bank to Overflow / Sunday Buffer</div>
+            <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">
+              Trims displaced minutes cleanly today and moves them to your Sunday Overflow Bank so tonight stays calm.
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px;">
+        <button class="btn btn-sm" onclick="closeModal('modal-adjust')">Cancel</button>
+        <button class="btn btn-sm btn-amber" onclick="applyTodayAdjustment()">Recalculate Today</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       APPLICATION JAVASCRIPT (100% SELF-CONTAINED VANILLA JS)
+       ========================================================================= -->
+  <script>
+    'use strict';
+
+    // -------------------------------------------------------------------------
+    // 1. CONSTANTS, 27 EXACT BTR MODULES (6,517m), 6 PHASES & BASELINE (98/145)
+    // -------------------------------------------------------------------------
+    const STORAGE_KEY = 'inicet_planner_v6';
+    const PLAN_START = '2026-11-24';
+    const SPRINT_END = '2026-12-14';
+    const EXAM_DATE = '2027-05-23';
+    const EBB_INTERVALS = [1, 3, 7, 14, 30];
+
+    const BTR_CATEGORIES = [
+      { id: 'general', name: 'General Core (289m)' },
+      { id: 'systems', name: 'Integrated Systems (1,462m)' },
+      { id: 'major', name: 'Major Clinicals (1,497m)' },
+      { id: 'mid', name: 'Mid Subjects (1,366m)' },
+      { id: 'short', name: 'Short Subjects & FMT (1,903m)' }
+    ];
+
+    const BTR_MODULES = [
+      // General Core (289m)
+      { id: 'gpath', cat: 'general', name: 'G Path', duration: 77, subject: 'Pathology' },
+      { id: 'pharm', cat: 'general', name: 'Pharm', duration: 131, subject: 'Pharmacology' },
+      { id: 'physio', cat: 'general', name: 'Physio', duration: 81, subject: 'Physiology' },
+      // Integrated Systems (1,462m)
+      { id: 'cvs', cat: 'systems', name: 'CVS', duration: 268, subject: 'Medicine' },
+      { id: 'rs', cat: 'systems', name: 'RS', duration: 175, subject: 'Medicine' },
+      { id: 'cns', cat: 'systems', name: 'CNS', duration: 217, subject: 'Medicine' },
+      { id: 'renal', cat: 'systems', name: 'Renal', duration: 151, subject: 'Medicine' },
+      { id: 'endo', cat: 'systems', name: 'Endo', duration: 154, subject: 'Medicine' },
+      { id: 'git', cat: 'systems', name: 'GIT', duration: 109, subject: 'Medicine' },
+      { id: 'rheumat', cat: 'systems', name: 'Rheumat', duration: 88, subject: 'Medicine' },
+      { id: 'immuno', cat: 'systems', name: 'Immuno', duration: 72, subject: 'Microbiology' },
+      { id: 'hemat', cat: 'systems', name: 'Hemat', duration: 228, subject: 'Pathology' },
+      // Major Clinicals (1,497m)
+      { id: 'surgery', cat: 'major', name: 'Surgery', duration: 564, subject: 'Surgery' },
+      { id: 'obgy', cat: 'major', name: 'OBGY', duration: 547, subject: 'OBGY' },
+      { id: 'psm', cat: 'major', name: 'PSM', duration: 386, subject: 'PSM' },
+      // Mid Subjects (1,366m)
+      { id: 'paeds', cat: 'mid', name: 'Paeds', duration: 291, subject: 'Pediatrics' },
+      { id: 'anat', cat: 'mid', name: 'Anat', duration: 361, subject: 'Anatomy' },
+      { id: 'micro', cat: 'mid', name: 'Micro', duration: 380, subject: 'Microbiology' },
+      { id: 'biochem', cat: 'mid', name: 'Biochem', duration: 334, subject: 'Biochemistry' },
+      // Short Subjects & FMT (1,903m)
+      { id: 'derma', cat: 'short', name: 'Derma', duration: 205, subject: 'Short Subjects' },
+      { id: 'radio', cat: 'short', name: 'Radio', duration: 251, subject: 'Short Subjects' },
+      { id: 'psych', cat: 'short', name: 'Psych', duration: 172, subject: 'Short Subjects' },
+      { id: 'ortho', cat: 'short', name: 'Ortho', duration: 279, subject: 'Short Subjects' },
+      { id: 'anaesthesia', cat: 'short', name: 'Anaesthesia', duration: 165, subject: 'Short Subjects' },
+      { id: 'ent', cat: 'short', name: 'ENT', duration: 281, subject: 'Short Subjects' },
+      { id: 'ophtha', cat: 'short', name: 'Ophtha', duration: 298, subject: 'Short Subjects' },
+      { id: 'fmt', cat: 'short', name: 'FMT', duration: 252, subject: 'FMT' }
+    ];
+
+    const PHASES = [
+      {
+        num: 1, name: 'Phase 1 · BTR Video Sprint', short: 'BTR Sprint',
+        start: '2026-11-24', end: '2026-12-14', accent: 'amber',
+        cadence: '0 GTs · Complete 6,517m BTR',
+        desc: 'Finish all 27 BTR modules before Dec 15 subscription expiry while protecting evening 45m+20m PYQ & Ebbinghaus recall.'
+      },
+      {
+        num: 2, name: 'Phase 2 · Weekly GT + Pre/Para Depth', short: 'Weekly GT',
+        start: '2026-12-15', end: '2027-01-15', accent: 'cyan',
+        cadence: 'GT Every 7 Days',
+        desc: 'Heavy MCQs + Robbins, Katzung, Ganong, Apurba Sastry, Harper, Reddy, Snell & Langman textbook triangulation.'
+      },
+      {
+        num: 3, name: 'Phase 3 · 3-Day GT + Clinicals', short: '3-Day GT',
+        start: '2027-01-16', end: '2027-03-15', accent: 'terracotta',
+        cadence: 'GT Every 3 Days',
+        desc: 'Harrison\'s, Bailey & Love, Park PSM, OBGY, Paeds & Short Subjects. GTs auto-shift around blocked Feb days.'
+      },
+      {
+        num: 4, name: 'Phase 4 · 19-Subject Revision Bridge', short: 'Revision Bridge',
+        start: '2027-03-16', end: '2027-04-27', accent: 'sage',
+        cadence: 'GT Every 3 Days',
+        desc: 'Full 19-subject active consolidation, multi-statement drills, and closing recurring GT error-log gaps.'
+      },
+      {
+        num: 5, name: 'Phase 5 · Daily GT Sprint (15 Days)', short: 'Daily GT Sprint',
+        start: '2027-04-28', end: '2027-05-12', accent: 'terracotta',
+        cadence: 'GT Every Single Day (15 GTs)',
+        desc: '07:00–10:00 AM full 200-Q GT daily → structured afternoon review → patch 2 weakest topics + Ebbinghaus.'
+      },
+      {
+        num: 6, name: 'Phase 6 · 10-Day Muggup Lockdown', short: '10-Day Muggup',
+        start: '2027-05-13', end: '2027-05-22', accent: 'lavender',
+        cadence: 'STRICTLY ZERO GTs',
+        desc: 'Calm simple muggup: volatile tables, Drugs of Choice, annotated BTR, classic images & GT error log only.'
+      }
+    ];
+
+    const TEXTBOOK_BLOCKS = [
+      {
+        id: 'tb-1', start: '2026-11-24', end: '2026-12-14',
+        title: 'BTR Video Sprint (All 27 Modules Before Dec 15)',
+        tasks: [
+          'Complete General Core (G Path 77m, Pharm 131m, Physio 81m)',
+          'Complete Integrated Systems (CVS, RS, CNS, Renal, Endo, GIT, Rheumat, Immuno, Hemat)',
+          'Complete Major Clinicals (Surgery, OBGY, PSM) & Mid Subjects (Paeds, Anat, Micro, Biochem)',
+          'Complete Short Subjects & FMT before Dec 15 expiry + daily 45m+20m PYQs'
+        ]
+      },
+      {
+        id: 'tb-2', start: '2026-12-15', end: '2026-12-26',
+        title: 'Robbins Pathology + Katzung Pharmacology Deep-Dive',
+        tasks: [
+          'Robbins Ch. 2–7 (Cell Injury, Inflammation, Genetics, Immune, Neoplasia) tables',
+          'Robbins Ch. 11–14 & 20 (Vasculitis, Heart/MI, Heme, Kidney EM/IF patterns)',
+          'Katzung Ch. 2–3 (PK/PD curves) & Ch. 6–14 (ANS, Antihypertensives, HF, Antiarrhythmics)',
+          '200 timed Path/Pharma INI-CET PYQs + Weekly GT error audit'
+        ]
+      },
+      {
+        id: 'tb-3', start: '2026-12-27', end: '2027-01-15',
+        title: 'Ganong + Apurba Sastry + Harper + Reddy + Snell/Langman',
+        tasks: [
+          'Ganong Graphs: Wiggers, PV Loops, O2-Hb Curve, Davenport Acid-Base & Neuro-Endo',
+          'Apurba Sastry Immunology, Bacteriology flowcharts, Virology, Mycology & Parasitology',
+          'Harper Enzymes (Lineweaver-Burk), Metabolism, DNA Repair/PCR & Reddy FMT (BNS updates)',
+          'Snell Brainstem/Tracts + Langman Pharyngeal Arches & Embryology + Weekly GTs'
+        ]
+      },
+      {
+        id: 'tb-4', start: '2027-01-16', end: '2027-02-15',
+        title: 'Harrison\'s Medicine + Bailey & Love Surgery + Ortho/Anesthesia',
+        tasks: [
+          'Harrison\'s flowcharts: ACS, Arrhythmias, ILD, Stroke, Cirrhosis, DKA/HHS, SLE/RA',
+          'Bailey & Love: ATLS Trauma, GI/Hepatobiliary, Breast, Thyroid, Urology TNM updates',
+          'Maheshwari Ortho nerve palsies/tumors & Anesthesia airway/ventilator/blocks',
+          'Maintain 3-day GT cadence & climb toward 165+ calibrated attempts'
+        ]
+      },
+      {
+        id: 'tb-5', start: '2027-02-16', end: '2027-03-15',
+        title: 'OBGYN + Pediatrics + Park PSM + Short Subjects',
+        tasks: [
+          'OBGYN High-Risk Pregnancy, CTG, FIGO staging & Pediatrics NRP/Milestones/CHD',
+          'Park PSM Biostatistics (Sensitivity/PPV/Likelihood Ratios), Epidemiology & National Programs',
+          'Ophthalmology, ENT, Psychiatry (DSM-5), Dermatology & Radiology image banks',
+          'Auto-shifted 3-day GTs around February blocked dates'
+        ]
+      },
+      {
+        id: 'tb-6', start: '2027-03-16', end: '2027-04-27',
+        title: 'Phase 4: Full 19-Subject Revision Bridge',
+        tasks: [
+          '1st complete revision of all 7 Pre & Para-Clinical annotated BTR + exception tables',
+          '1st complete revision of all 12 Clinical & Short Subjects + 2021–2026 INI-CET PYQs',
+          'Multi-statement ("1, 2 & 3 correct") distractor elimination mastery',
+          'Push GT score toward 140–155+ corrects out of 165–180 attempts'
+        ]
+      },
+      {
+        id: 'tb-7', start: '2027-04-28', end: '2027-05-12',
+        title: 'Phase 5: 15-Day Daily GT Sprint',
+        tasks: [
+          'Take 1 full 200-Q GT every single morning (07:00–10:00 AM) for 15 consecutive days',
+          'Complete structured afternoon error audit & patch weakest 2 topics same day',
+          'Keep Ebbinghaus fragile facts updated nightly before 11:00 PM curfew'
+        ]
+      },
+      {
+        id: 'tb-8', start: '2027-05-13', end: '2027-05-22',
+        title: 'Phase 6: Final 10-Day Simple Muggup Lockdown (0 GTs)',
+        tasks: [
+          'Strictly ZERO Grand Tests — pure rapid recall & confidence protection',
+          'Muggup Drugs of Choice, Antidotes, Tumor Markers, Biostat Formulas & IPC/BNS',
+          'Final pass of Annotated BTR + Personal GT Error Log + Classic Images'
+        ]
+      }
+    ];
+
+    // -------------------------------------------------------------------------
+    // 2. DATE & FORMATTING UTILITIES
+    // -------------------------------------------------------------------------
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[c]);
+    }
+
+    function parseYMD(ymd) {
+      const [y, m, d] = ymd.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function formatYMD(dt) {
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+    }
+
+    function addDays(ymd, delta) {
+      const dt = parseYMD(ymd);
+      dt.setDate(dt.getDate() + delta);
+      return formatYMD(dt);
+    }
+
+    function diffDays(fromYMD, toYMD) {
+      return Math.round((parseYMD(toYMD) - parseYMD(fromYMD)) / 86400000);
+    }
+
+    function getDefaultToday() {
+      const now = formatYMD(new Date());
+      if (now >= PLAN_START && now <= EXAM_DATE) return now;
+      return PLAN_START;
+    }
+
+    function getDayPattern(ymd) {
+      const dow = parseYMD(ymd).getDay();
+      if (dow === 0) return 'SUN';
+      if (dow === 1 || dow === 3 || dow === 5) return 'MWF';
+      return 'TTS';
+    }
+
+    function formatClock(mins) {
+      const clamped = Math.max(0, Math.min(1380, Math.round(mins)));
+      return `${String(Math.floor(clamped / 60)).padStart(2, '0')}:${String(clamped % 60).padStart(2, '0')}`;
+    }
+
+    function formatHM(mins) {
+      const m = Math.max(0, Math.round(mins));
+      const h = Math.floor(m / 60);
+      const r = m % 60;
+      if (h === 0) return `${r}m`;
+      if (r === 0) return `${h}h`;
+      return `${h}h ${r}m`;
+    }
+
+    function getPhaseForDate(ymd) {
+      if (ymd === EXAM_DATE) {
+        return { num: 7, name: 'Exam Day · INI-CET May 23', short: 'Exam Day', accent: 'sage', cadence: 'Exam Day' };
+      }
+      return PHASES.find(p => ymd >= p.start && ymd <= p.end) || PHASES[0];
+    }
+
+    function getTextbookBlock(ymd) {
+      return TEXTBOOK_BLOCKS.find(b => ymd >= b.start && ymd <= b.end) || TEXTBOOK_BLOCKS[0];
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. STATE INITIALIZATION & LOCALSTORAGE (CLEAN KEY: inicet_planner_v6)
+    // -------------------------------------------------------------------------
+    function createInitialState() {
+      const btr = {};
+      BTR_MODULES.forEach(m => { btr[m.id] = { watched: 0, total: m.duration }; });
+
+      return {
+        selectedDate: PLAN_START, // Opens directly on Tuesday, Nov 24, 2026
+        playbackSpeed: 1.25,
+        phase4Step: 3,
+        btr,
+        completedSlots: {},
+        dayAdjustments: {},
+        overflowBank: [],
+        // Pre-seeded editable blocked-day placeholders (max 7 per month)
+        blockedDec: ['2026-12-18', '2026-12-19', '2026-12-20'],
+        blockedFeb: ['2027-02-12', '2027-02-13', '2027-02-14'],
+        // Seeded Ebbinghaus topics right at sprint launch
+        ebbinghaus: [
+          { id: 'ebb-s1', topic: 'G Path — Cell Injury, Inflammation & Neoplasia', subject: 'Pathology', baseDate: '2026-11-24', stage: 0, nextDue: '2026-11-25', moduleId: 'gpath' },
+          { id: 'ebb-s2', topic: 'General Pharmacology — PK/PD & Dose-Response Curves', subject: 'Pharmacology', baseDate: '2026-11-24', stage: 0, nextDue: '2026-11-25', moduleId: 'pharm' },
+          { id: 'ebb-s3', topic: 'General Physiology — Excitable Tissue & Action Potentials', subject: 'Physiology', baseDate: '2026-11-24', stage: 0, nextDue: '2026-11-25', moduleId: 'physio' }
+        ],
+        // Updated Exact Baseline: 98 Correct out of 145 Solved (47 wrong, 55 unattempted, 67.6% acc, 82.3 INI-CET net)
+        gtLogs: [
+          {
+            id: 'gt-baseline',
+            label: 'NEET PG 2026 Baseline',
+            date: '2026-08-15',
+            attempts: 145,
+            correct: 98,
+            weak: 'Baseline (47W, 55 unattempted · 67.6% acc) — Target: 140–155+ C / 165–180 att'
+          }
+        ],
+        weeklyChecks: {},
+        customTargets: [
+          { id: 'ct-1', text: 'Complete all 27 BTR videos (6,517m) before Dec 15 subscription expiry', done: false },
+          { id: 'ct-2', text: 'Raise GT accuracy from 67.6% (98/145) toward 82%+ (140–155+ / 165–180)', done: false }
+        ]
+      };
+    }
+
+    let state = loadState();
+    let activeTab = 'today';
+    let btrView = 'modules';
+    let ebbFilter = 'due';
+    let resetArmed = false;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return createInitialState();
+        const parsed = JSON.parse(raw);
+        const def = createInitialState();
+        const mergedBtr = { ...def.btr };
+        if (parsed.btr) {
+          BTR_MODULES.forEach(m => {
+            if (parsed.btr[m.id]) {
+              mergedBtr[m.id] = {
+                watched: Math.max(0, parseInt(parsed.btr[m.id].watched, 10) || 0),
+                total: Math.max(1, parseInt(parsed.btr[m.id].total, 10) || m.duration)
+              };
+            }
+          });
+        }
+        return {
+          ...def,
+          ...parsed,
+          btr: mergedBtr,
+          blockedDec: Array.isArray(parsed.blockedDec) ? parsed.blockedDec.slice(0, 7) : def.blockedDec,
+          blockedFeb: Array.isArray(parsed.blockedFeb) ? parsed.blockedFeb.slice(0, 7) : def.blockedFeb,
+          ebbinghaus: Array.isArray(parsed.ebbinghaus) ? parsed.ebbinghaus : def.ebbinghaus,
+          gtLogs: Array.isArray(parsed.gtLogs) && parsed.gtLogs.length ? parsed.gtLogs : def.gtLogs,
+          customTargets: Array.isArray(parsed.customTargets) ? parsed.customTargets : def.customTargets
+        };
+      } catch (err) {
+        console.error('Failed to load state:', err);
+        return createInitialState();
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        showToast('Local storage unavailable', 'terracotta');
+      }
+    }
+
+    function isBlocked(ymd) {
+      return state.blockedDec.includes(ymd) || state.blockedFeb.includes(ymd);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. AUTOMATIC 6-PHASE GT ENGINE (AUTO-SHIFTS AROUND BLOCKED DAYS)
+    // -------------------------------------------------------------------------
+    function computeGTSchedule() {
+      const schedule = [];
+      const gtMap = {};
+
+      function scheduleGT(nominalDate, phaseNum, phaseEnd) {
+        let d = nominalDate;
+        while (d <= phaseEnd && (isBlocked(d) || gtMap[d])) {
+          d = addDays(d, 1);
+        }
+        if (d <= phaseEnd && !gtMap[d]) {
+          const item = {
+            gtNum: schedule.length + 1,
+            date: d,
+            phaseNum,
+            shiftedFrom: d !== nominalDate ? nominalDate : null
+          };
+          schedule.push(item);
+          gtMap[d] = item;
+        }
+      }
+
+      // Phase 2: Weekly GT (Every 7 Days — Dec 15 to Jan 15)
+      for (let d = '2026-12-15'; d <= '2027-01-15'; d = addDays(d, 7)) {
+        scheduleGT(d, 2, '2027-01-15');
+      }
+      // Phase 3: Every 3 Days (Jan 16 to Mar 15)
+      for (let d = '2027-01-16'; d <= '2027-03-15'; d = addDays(d, 3)) {
+        scheduleGT(d, 3, '2027-03-15');
+      }
+      // Phase 4: Revision Bridge (Mar 16 to Apr 27 — Every 3d default or 2d toggle)
+      const step4 = state.phase4Step === 2 ? 2 : 3;
+      for (let d = '2027-03-16'; d <= '2027-04-27'; d = addDays(d, step4)) {
+        scheduleGT(d, 4, '2027-04-27');
+      }
+      // Phase 5: Exact 15-Day Daily GT Sprint (Apr 28 to May 12)
+      for (let d = '2027-04-28'; d <= '2027-05-12'; d = addDays(d, 1)) {
+        scheduleGT(d, 5, '2027-05-12');
+      }
+      // Phase 6 (May 13 – May 22): STRICTLY ZERO GTs
+
+      return { schedule, gtMap };
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. BTR VIDEO AUTO-ALLOTMENT ENGINE (6,517m ACROSS NOV 24 – DEC 14)
+    // -------------------------------------------------------------------------
+    function getBtrTotals() {
+      let total = 0, watched = 0;
+      BTR_MODULES.forEach(m => {
+        const s = state.btr[m.id];
+        total += s.total;
+        watched += Math.min(s.watched, s.total);
+      });
+      return { total, watched, remaining: Math.max(0, total - watched) };
+    }
+
+    function computeBtrPlan() {
+      const speed = state.playbackSpeed || 1.25;
+      const dates = [];
+      for (let d = PLAN_START; d <= SPRINT_END; d = addDays(d, 1)) dates.push(d);
+
+      const dayPlans = {};
+      let totalRealCap = 0;
+      let activeDays = 0;
+
+      dates.forEach(d => {
+        const blk = isBlocked(d);
+        const pat = getDayPattern(d);
+        // Daily real BTR slot capacities (leaving 07:00-07:45 waking ramp, OPD, lunch, 45m+20m PYQ & Ebbinghaus intact):
+        // MWF: 135m (07:45-10:00) + 60m (15:00-16:00) + 135m (17:00-19:15) = 330m
+        // TTS: 135m (07:45-10:00) + 120m (15:00-17:00) + 105m (17:00-18:45) = 360m
+        // SUN: 135m (07:45-10:00) + 180m (10:00-13:00) + 150m (15:00-17:30) = 465m
+        const caps = blk ? [] : (pat === 'MWF' ? [135, 60, 135] : (pat === 'TTS' ? [135, 120, 105] : [135, 180, 150]));
+        if (!blk) activeDays++;
+        totalRealCap += caps.reduce((a, b) => a + b, 0);
+        dayPlans[d] = { date: d, blocked: blk, pat, caps, slots: caps.map(() => []), totalRaw: 0, totalReal: 0 };
+      });
+
+      const totals = getBtrTotals();
+      const totalRealReq = totals.total / speed;
+      const fillRatio = totalRealCap > 0 ? Math.min(1, totalRealReq / totalRealCap) : 1;
+      const overflowReal = Math.max(0, Math.round(totalRealReq - totalRealCap));
+
+      const activeDates = dates.filter(d => !dayPlans[d].blocked);
+      const lastActive = activeDates[activeDates.length - 1];
+
+      let modIdx = 0;
+      let modRawLeft = state.btr[BTR_MODULES[0].id].total;
+      const moduleFinishDates = {};
+
+      for (const d of activeDates) {
+        const dp = dayPlans[d];
+        for (let s = 0; s < dp.caps.length; s++) {
+          let budgetReal = dp.caps[s] * fillRatio;
+          if (d === lastActive && s === dp.caps.length - 1 && overflowReal === 0) {
+            budgetReal = dp.caps[s];
+          }
+
+          while (budgetReal > 0.5 && modIdx < BTR_MODULES.length) {
+            const mod = BTR_MODULES[modIdx];
+            const modRealLeft = modRawLeft / speed;
+            if (modRealLeft <= budgetReal + 0.5) {
+              const takeRaw = Math.round(modRawLeft);
+              const takeReal = Math.round(takeRaw / speed);
+              if (takeRaw > 0) {
+                dp.slots[s].push({ id: mod.id, name: mod.name, rawMins: takeRaw, realMins: takeReal });
+                dp.totalRaw += takeRaw;
+                dp.totalReal += takeReal;
+              }
+              moduleFinishDates[mod.id] = d;
+              budgetReal -= modRealLeft;
+              modIdx++;
+              modRawLeft = modIdx < BTR_MODULES.length ? state.btr[BTR_MODULES[modIdx].id].total : 0;
+            } else {
+              const takeRaw = Math.min(modRawLeft, Math.max(1, Math.round(budgetReal * speed)));
+              const takeReal = Math.round(takeRaw / speed);
+              dp.slots[s].push({ id: mod.id, name: mod.name, rawMins: takeRaw, realMins: takeReal });
+              dp.totalRaw += takeRaw;
+              dp.totalReal += takeReal;
+              modRawLeft -= takeRaw;
+              budgetReal = 0;
+            }
+          }
+        }
+      }
+
+      return { dates, dayPlans, activeDays, totalRealCap, totalRealReq: Math.round(totalRealReq), overflowReal, moduleFinishDates };
+    }
+
+    function formatSlices(slices, speed) {
+      if (!slices || !slices.length) return 'Buffer / annotated BTR review — all modules allotted';
+      const raw = slices.reduce((s, x) => s + x.rawMins, 0);
+      const real = Math.round(raw / speed);
+      const list = slices.map(x => `${x.name} (${x.rawMins}m)`).join(' · ');
+      return `${list} — ${raw}m video (${real}m @ ${speed}x)`;
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. EBBINGHAUS SPACED REPETITION ENGINE (D+1, D+3, D+7, D+14, D+30)
+    // -------------------------------------------------------------------------
+    function getDueEbbinghaus(dateStr, btrPlan) {
+      const tracked = state.ebbinghaus.filter(x => x.stage < EBB_INTERVALS.length);
+      const allTrackedMods = new Set(state.ebbinghaus.map(t => t.moduleId).filter(Boolean));
+
+      const dueTracked = tracked
+        .filter(x => x.nextDue <= dateStr)
+        .map(x => ({
+          ...x,
+          overdueDays: Math.max(0, diffDays(x.nextDue, dateStr)),
+          intervalLabel: `D+${EBB_INTERVALS[x.stage]}`,
+          projected: false
+        }));
+
+      // Project future BTR module reviews when browsing forward dates
+      const projected = [];
+      if (btrPlan && btrPlan.moduleFinishDates) {
+        BTR_MODULES.forEach(mod => {
+          if (allTrackedMods.has(mod.id)) return;
+          const fin = btrPlan.moduleFinishDates[mod.id];
+          if (!fin || fin >= dateStr) return;
+          const delta = diffDays(fin, dateStr);
+          const stageIdx = EBB_INTERVALS.indexOf(delta);
+          if (stageIdx !== -1) {
+            projected.push({
+              id: `proj-${mod.id}`,
+              moduleId: mod.id,
+              topic: `${mod.name} (BTR Planned)`,
+              subject: mod.subject,
+              baseDate: fin,
+              stage: stageIdx,
+              nextDue: dateStr,
+              overdueDays: 0,
+              intervalLabel: `D+${EBB_INTERVALS[stageIdx]}`,
+              projected: true
+            });
+          }
+        });
+      }
+
+      dueTracked.sort((a, b) => b.overdueDays - a.overdueDays || a.stage - b.stage);
+      return [...dueTracked, ...projected];
+    }
+
+    function enrollBtrInEbbinghaus(modId, studyDate) {
+      if (state.ebbinghaus.some(t => t.moduleId === modId)) return false;
+      const mod = BTR_MODULES.find(m => m.id === modId);
+      if (!mod) return false;
+      state.ebbinghaus.unshift({
+        id: 'ebb-' + Date.now() + '-' + mod.id,
+        moduleId: mod.id,
+        topic: `${mod.name} (BTR Complete)`,
+        subject: mod.subject,
+        baseDate: studyDate,
+        stage: 0,
+        nextDue: addDays(studyDate, 1)
+      });
+      return true;
+    }
+
+    function advanceEbb(itemId, isProj, modId, projStage, baseDate, ev) {
+      if (ev) ev.stopPropagation();
+      const today = state.selectedDate;
+      let item;
+
+      if (isProj) {
+        const mod = BTR_MODULES.find(m => m.id === modId);
+        if (!mod) return;
+        item = {
+          id: 'ebb-' + Date.now() + '-' + mod.id,
+          moduleId: mod.id,
+          topic: `${mod.name} (BTR)`,
+          subject: mod.subject,
+          baseDate,
+          stage: projStage,
+          nextDue: today
+        };
+        state.ebbinghaus.unshift(item);
+      } else {
+        item = state.ebbinghaus.find(t => t.id === itemId);
+      }
+      if (!item) return;
+
+      const nextStage = item.stage + 1;
+      if (nextStage >= EBB_INTERVALS.length) {
+        item.stage = EBB_INTERVALS.length;
+        item.nextDue = 'MASTERED';
+        showToast(`Mastered "${item.topic}" (D+30 complete)!`, 'sage');
+      } else {
+        const prevInt = EBB_INTERVALS[item.stage];
+        const nextInt = EBB_INTERVALS[nextStage];
+        let cand = addDays(item.baseDate, nextInt);
+        if (cand <= today) cand = addDays(today, Math.max(1, nextInt - prevInt));
+        item.stage = nextStage;
+        item.nextDue = cand;
+        showToast(`Reviewed ✓ Next recall at D+${nextInt} (${cand.slice(5)})`, 'cyan');
+      }
+      saveState();
+      renderAll();
+    }
+
+    function resetEbb(itemId, isProj, modId, ev) {
+      if (ev) ev.stopPropagation();
+      const today = state.selectedDate;
+      if (isProj) {
+        const mod = BTR_MODULES.find(m => m.id === modId);
+        if (!mod) return;
+        state.ebbinghaus.unshift({
+          id: 'ebb-' + Date.now() + '-' + mod.id,
+          moduleId: mod.id,
+          topic: `${mod.name} (BTR)`,
+          subject: mod.subject,
+          baseDate: today,
+          stage: 0,
+          nextDue: addDays(today, 1)
+        });
+      } else {
+        const item = state.ebbinghaus.find(t => t.id === itemId);
+        if (!item) return;
+        item.stage = 0;
+        item.baseDate = today;
+        item.nextDue = addDays(today, 1);
+      }
+      showToast(`Reset to D+1 tomorrow (${addDays(today, 1).slice(5)})`, 'amber');
+      saveState();
+      renderAll();
+    }
+
+    function deleteEbb(itemId, ev) {
+      if (ev) ev.stopPropagation();
+      state.ebbinghaus = state.ebbinghaus.filter(t => t.id !== itemId);
+      saveState();
+      renderAll();
+      showToast('Removed topic from Ebbinghaus deck', 'muted');
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. DAILY TIMELINE ENGINE (EXACT FIXED WINDOWS + PROTECTED SLOTS)
+    // -------------------------------------------------------------------------
+    function buildTimeline(dateStr, gtData, btrPlan) {
+      const phase = getPhaseForDate(dateStr);
+      const pat = getDayPattern(dateStr);
+      const blocked = isBlocked(dateStr);
+      const gtToday = gtData.gtMap[dateStr] || null;
+      const adj = state.dayAdjustments[dateStr];
+      const speed = state.playbackSpeed || 1.25;
+      const tbBlock = getTextbookBlock(dateStr);
+      const ovTotal = state.overflowBank.reduce((s, x) => s + x.mins, 0);
+
+      // EXAM DAY: SUNDAY, MAY 23, 2027
+      if (dateStr === EXAM_DATE) {
+        return [
+          { id: 'ex-1', start: 420, end: 480, fixed: false, accent: 'lavender', title: 'Calm Morning, Breakfast & Center Arrival', subtitle: 'Zero heavy cramming · Verify admit card, ID & calm breathing' },
+          { id: 'ex-2', start: 540, end: 585, fixed: false, accent: 'cyan', title: 'INI-CET Block 1 (Q1–Q50 · 45m)', subtitle: '54s/question rhythm · Calibrated elimination toward 165–180 total attempts' },
+          { id: 'ex-3', start: 585, end: 630, fixed: false, accent: 'cyan', title: 'INI-CET Block 2 (Q51–Q100 · 45m)', subtitle: 'Clean mental reset at section lock · Multi-statement precision' },
+          { id: 'ex-4', start: 630, end: 675, fixed: false, accent: 'cyan', title: 'INI-CET Block 3 (Q101–Q150 · 45m)', subtitle: 'Clinical vignettes, graphs & classic histology images' },
+          { id: 'ex-5', start: 675, end: 720, fixed: false, accent: 'sage', title: 'INI-CET Block 4 (Q151–Q200 · 45m)', subtitle: 'Strong finish — execute your full 6-month training!' }
+        ];
+      }
+
+      // BLOCKED DISTRACTION DAY (SURVIVAL MODE)
+      if (blocked) {
+        const rows = [];
+        if (pat !== 'SUN') {
+          rows.push({ id: 'b-opd1', start: 600, end: 780, fixed: true, accent: 'muted', title: 'Morning OPD (Mon–Sat)', subtitle: 'Fixed clinical routine' });
+        }
+        rows.push({ id: 'b-lunch', start: 780, end: 900, fixed: true, accent: 'muted', title: 'Lunch & Adaptation Rest', subtitle: 'Fixed midday break' });
+        if (pat === 'MWF') {
+          rows.push({ id: 'b-opd2', start: 960, end: 1020, fixed: true, accent: 'muted', title: 'Evening OPD (Mon/Wed/Fri)', subtitle: 'Fixed evening clinic' });
+        }
+        rows.push({
+          id: 'b-ebb', start: 1290, end: 1310, fixed: false, accent: 'cyan', isEbbinghaus: true,
+          title: 'Blocked Day Survival Mode: 20-Min Ebbinghaus Maintenance',
+          subtitle: 'Guilt-free distraction day — tap through D+1 / D+3 due cards only to keep memory intact'
+        });
+        return rows;
+      }
+
+      let rows = [];
+
+      // PHASE 1: BTR VIDEO SPRINT (NOV 24 – DEC 14, 2026) — 0 GTs
+      if (phase.num === 1) {
+        const dp = btrPlan.dayPlans[dateStr];
+        const s0 = dp ? dp.slots[0] : [];
+        const s1 = dp ? dp.slots[1] : [];
+        const s2 = dp ? dp.slots[2] : [];
+
+        rows.push({ id: 'p1-ramp', start: 420, end: 465, fixed: false, accent: 'sage', title: 'Morning Waking Ramp (Active MCQs & Flashcards)', subtitle: 'Medium-intense active activation (07:00–07:45) to beat early-morning sleepiness' });
+        rows.push({ id: 'p1-btr1', start: 465, end: 600, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s0, title: 'Morning BTR Video Block 1', subtitle: formatSlices(s0, speed) });
+
+        if (pat === 'SUN') {
+          rows.push({ id: 'p1-btr2', start: 600, end: 780, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s1, title: 'Midday BTR Sprint Block 2 & Annotation (No OPD)', subtitle: formatSlices(s1, speed) });
+        } else {
+          rows.push({ id: 'f-opd1', start: 600, end: 780, fixed: true, accent: 'muted', title: 'Morning OPD (Mon–Sat)', subtitle: 'Fixed clinical posting' });
+        }
+
+        rows.push({ id: 'f-lunch', start: 780, end: 900, fixed: true, accent: 'muted', title: 'Lunch (1–2 PM) + Post-Lunch Adaptation Rest (2–3 PM)', subtitle: 'Afternoon study strictly starts at 03:00 PM' });
+
+        if (pat === 'MWF') {
+          rows.push({ id: 'p1-btr2', start: 900, end: 960, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s1, title: 'Afternoon BTR Video Block 2', subtitle: formatSlices(s1, speed) });
+          rows.push({ id: 'f-opd2', start: 960, end: 1020, fixed: true, accent: 'muted', title: 'Evening OPD (Mon/Wed/Fri)', subtitle: 'Fixed evening clinic' });
+          rows.push({ id: 'p1-btr3', start: 1020, end: 1155, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s2, title: 'Library Evening BTR Block 3', subtitle: formatSlices(s2, speed) });
+          rows.push({ id: 'p1-pyq', start: 1155, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20-min distractor review' });
+          rows.push({ id: 'p1-ebb', start: 1220, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (40m)', subtitle: 'Spaced repetition due today (D+1, D+3, D+7, D+14, D+30)' });
+        } else if (pat === 'TTS') {
+          rows.push({ id: 'p1-btr2', start: 900, end: 1020, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s1, title: 'Afternoon BTR Video Block 2', subtitle: formatSlices(s1, speed) });
+          rows.push({ id: 'p1-btr3', start: 1020, end: 1125, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s2, title: 'Library Evening BTR Block 3', subtitle: formatSlices(s2, speed) });
+          rows.push({ id: 'p1-pyq', start: 1125, end: 1190, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20-min distractor review' });
+          rows.push({ id: 'p1-ebb', start: 1190, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (70m)', subtitle: 'Spaced repetition due today (D+1, D+3, D+7, D+14, D+30)' });
+        } else {
+          rows.push({ id: 'p1-btr3', start: 900, end: 1050, fixed: false, accent: 'amber', protectedSlot: true, isBtr: true, slices: s2, title: 'Afternoon BTR Sprint Block 3', subtitle: formatSlices(s2, speed) });
+          rows.push({ id: 'p1-pyq', start: 1050, end: 1115, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20-min distractor review' });
+          rows.push({ id: 'p1-ebb', start: 1115, end: 1215, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Weekly Ebbinghaus Deep Revision (100m)', subtitle: 'Clear all due & overdue forgetting-curve topics for the week' });
+          rows.push({ id: 'p1-ov', start: 1215, end: 1260, fixed: false, accent: 'sage', trimPriority: 1, title: 'Overflow Buffer / Week Consolidation', subtitle: ovTotal > 0 ? `Absorb ${ovTotal}m from Overflow Bank + review BTR annotations` : 'Consolidate weak workbook pages' });
+        }
+
+        rows.push({ id: 'f-din', start: 1260, end: 1290, fixed: true, accent: 'muted', title: 'Arrive Home from Library + Screen-Free Dinner', subtitle: '30-min dinner (09:00–09:30 PM)' });
+        rows.push({ id: 'p1-night1', start: 1290, end: 1350, fixed: false, accent: 'sage', trimPriority: 1, title: 'Night Consolidation (Volatile Tables / DoC / BTR Buffer)', subtitle: 'Lock high-yield tables & Drug of Choice notes from today\'s videos' });
+        rows.push({ id: 'p1-night2', start: 1350, end: 1380, fixed: false, accent: 'sage', trimPriority: 2, title: 'Low-Glare Pre-Sleep Wind-Down', subtitle: 'Calm recall before 11:00 PM curfew' });
+        return applyCompression(rows, adj);
+      }
+
+      // PHASE 6: FINAL 10-DAY SIMPLE MUGGUP LOCKDOWN (MAY 13 – MAY 22 — STRICTLY 0 GTs)
+      if (phase.num === 6) {
+        rows.push({ id: 'p6-ramp', start: 420, end: 465, fixed: false, accent: 'lavender', title: 'Morning Active Flashcard Ramp', subtitle: 'Gentle waking recall — Drugs of Choice & volatile numbers' });
+        rows.push({ id: 'p6-morn', start: 465, end: 600, fixed: false, accent: 'lavender', title: 'Annotated BTR Rapid Muggup Pass', subtitle: 'Strictly zero GTs — high-yield underlined BTR facts & tables' });
+
+        if (pat === 'SUN') {
+          rows.push({ id: 'p6-sun', start: 600, end: 780, fixed: false, accent: 'lavender', title: 'Midday Annotated BTR & Volatile Tables (No OPD)', subtitle: 'Calm cover-to-cover muggup of volatile lists & classic images' });
+        } else {
+          rows.push({ id: 'f-opd1', start: 600, end: 780, fixed: true, accent: 'muted', title: 'Morning OPD (Mon–Sat)', subtitle: 'Fixed clinical posting' });
+        }
+
+        rows.push({ id: 'f-lunch', start: 780, end: 900, fixed: true, accent: 'muted', title: 'Lunch (1–2 PM) + Post-Lunch Adaptation Rest (2–3 PM)', subtitle: 'Afternoon muggup starts at 03:00 PM' });
+
+        if (pat === 'MWF') {
+          rows.push({ id: 'p6-a1', start: 900, end: 960, fixed: false, accent: 'lavender', title: 'Drugs of Choice, Antidotes & Biostat Formulas', subtitle: 'Pure volatile muggup — zero new sources' });
+          rows.push({ id: 'f-opd2', start: 960, end: 1020, fixed: true, accent: 'muted', title: 'Evening OPD (Mon/Wed/Fri)', subtitle: 'Fixed evening clinic' });
+          rows.push({ id: 'p6-a2', start: 1020, end: 1155, fixed: false, accent: 'lavender', title: 'Image Banks & Personal GT Error Log Muggup', subtitle: 'Histology, Radiology, Instruments & every past GT mistake' });
+          rows.push({ id: 'p6-pyq', start: 1155, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'High-Yield Recall PYQs (45m) + Review (20m)', subtitle: '2021–2026 INI-CET recall sweep + 20m quick check' });
+          rows.push({ id: 'p6-ebb', start: 1220, end: 1260, fixed: false, accent: 'lavender', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Fragile Hot-List (40m)', subtitle: 'Fragile D+1 / D+3 facts only' });
+        } else if (pat === 'TTS') {
+          rows.push({ id: 'p6-a1', start: 900, end: 1020, fixed: false, accent: 'lavender', title: 'Volatile Tables, Drugs of Choice & Antidotes', subtitle: 'Pure retention of high-yield classifications & tables' });
+          rows.push({ id: 'p6-a2', start: 1020, end: 1125, fixed: false, accent: 'lavender', title: 'Image Banks & Personal GT Error Log Muggup', subtitle: 'Histology, Radiology & past GT mistake notebook' });
+          rows.push({ id: 'p6-pyq', start: 1125, end: 1190, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'High-Yield Recall PYQs (45m) + Review (20m)', subtitle: '2021–2026 INI-CET recall sweep + 20m check' });
+          rows.push({ id: 'p6-ebb', start: 1190, end: 1260, fixed: false, accent: 'lavender', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Fragile Hot-List (70m)', subtitle: 'Fragile D+1 / D+3 memory reinforcement' });
+        } else {
+          rows.push({ id: 'p6-a', start: 900, end: 1065, fixed: false, accent: 'lavender', title: 'Complete Volatile Charts, Images & GT Error Log', subtitle: 'Calm consolidation of every high-yield table & mistake log' });
+          rows.push({ id: 'p6-pyq', start: 1065, end: 1130, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'High-Yield Recall PYQs (45m) + Review (20m)', subtitle: '2021–2026 INI-CET recall sweep + 20m check' });
+          rows.push({ id: 'p6-ebb', start: 1130, end: 1220, fixed: false, accent: 'lavender', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Fragile Hot-List (90m)', subtitle: 'Lock in all fragile D+1 / D+3 cards' });
+          rows.push({ id: 'p6-buf', start: 1220, end: 1260, fixed: false, accent: 'lavender', trimPriority: 1, title: 'Calm Pre-Dinner Skim', subtitle: 'Light review without stress' });
+        }
+
+        rows.push({ id: 'f-din', start: 1260, end: 1290, fixed: true, accent: 'muted', title: 'Arrive Home from Library + Screen-Free Dinner', subtitle: '30-min dinner (09:00–09:30 PM)' });
+        rows.push({ id: 'p6-n1', start: 1290, end: 1350, fixed: false, accent: 'lavender', trimPriority: 1, title: 'Night Formula, DoC & Mnemonic Muggup', subtitle: 'Zero heavy concepts — simple recall only' });
+        rows.push({ id: 'p6-n2', start: 1350, end: 1380, fixed: false, accent: 'lavender', trimPriority: 2, title: 'Sleep-Protected Low-Glare Wind-Down', subtitle: 'Protect 7.5h sleep hygiene before 11:00 PM curfew' });
+        return applyCompression(rows, adj);
+      }
+
+      // PHASES 2, 3, 4 & 5 — GT DAY
+      if (gtToday) {
+        const gtTag = `GT #${gtToday.gtNum}`;
+        rows.push({
+          id: 'gt-main', start: 420, end: 600, fixed: false, accent: 'terracotta', protectedSlot: true, badge: gtTag,
+          title: `Full 3-Hr 200-Q INI-CET Grand Test (${gtTag})`,
+          subtitle: '4 × 45m locked sections (07:00–10:00 AM) · Climb from 98/145 baseline toward 140–155+ C / 165–180 att'
+        });
+
+        if (pat === 'SUN') {
+          rows.push({ id: 'gt-sun', start: 600, end: 780, fixed: false, accent: 'sage', trimPriority: 2, title: 'Post-GT Decompression & Initial Score Audit (No OPD)', subtitle: ovTotal > 0 ? `Log GT score + absorb ${ovTotal}m Overflow Bank` : 'Log GT score in Targets & GTs tab + mental recharge' });
+        } else {
+          rows.push({ id: 'f-opd1', start: 600, end: 780, fixed: true, accent: 'muted', title: 'Morning OPD (Mon–Sat)', subtitle: 'Fixed clinical posting' });
+        }
+
+        rows.push({ id: 'f-lunch', start: 780, end: 900, fixed: true, accent: 'muted', title: 'Lunch (1–2 PM) + Post-Lunch Adaptation Rest (2–3 PM)', subtitle: 'Structured GT review starts at 03:00 PM' });
+
+        if (pat === 'MWF') {
+          rows.push({ id: 'gt-r1', start: 900, end: 960, fixed: false, accent: 'terracotta', title: `${gtTag} Structured Review (Part 1)`, subtitle: 'Audit wrong & guessed Qs from Sections 1–2' });
+          rows.push({ id: 'f-opd2', start: 960, end: 1020, fixed: true, accent: 'muted', title: 'Evening OPD (Mon/Wed/Fri)', subtitle: 'Fixed evening clinic' });
+          rows.push({ id: 'gt-r2', start: 1020, end: 1155, fixed: false, accent: 'terracotta', title: `${gtTag} Review & Patch 2 Weakest Topics`, subtitle: 'Finish Sections 3–4 audit & add missed concepts to Ebbinghaus deck' });
+          rows.push({ id: 'gt-pyq', start: 1155, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Targeted PYQ (45m) + Review (20m)', subtitle: '50-MCQ timed drill on today\'s weakest GT subject + 20m review' });
+          rows.push({ id: 'gt-ebb', start: 1220, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (40m)', subtitle: 'Keep forgetting-curve reviews unbroken on GT days' });
+        } else if (pat === 'TTS') {
+          rows.push({ id: 'gt-r1', start: 900, end: 1020, fixed: false, accent: 'terracotta', title: `${gtTag} Structured Error Audit`, subtitle: 'Categorize misses: Conceptual Gap vs Multi-Statement Trap vs Volatile Fact' });
+          rows.push({ id: 'gt-r2', start: 1020, end: 1125, fixed: false, accent: 'terracotta', title: 'Patch 2 Weakest GT Topics (Textbook + BTR)', subtitle: 'Close conceptual gaps & enroll new topics into Ebbinghaus D+1' });
+          rows.push({ id: 'gt-pyq', start: 1125, end: 1190, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Targeted PYQ (45m) + Review (20m)', subtitle: '50-MCQ timed drill on today\'s weakest GT subject + 20m review' });
+          rows.push({ id: 'gt-ebb', start: 1190, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (70m)', subtitle: 'Spaced repetition due today (D+1 to D+30)' });
+        } else {
+          rows.push({ id: 'gt-r', start: 900, end: 1065, fixed: false, accent: 'terracotta', title: `${gtTag} Full Error Audit & Patch 2 Weakest Topics`, subtitle: 'Deep review of all mistakes + log high-yield pearls' });
+          rows.push({ id: 'gt-pyq', start: 1065, end: 1130, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Targeted PYQ (45m) + Review (20m)', subtitle: '50-MCQ timed drill + 20m distractor audit' });
+          rows.push({ id: 'gt-ebb', start: 1130, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Weekly Ebbinghaus Revision (90m)', subtitle: 'Clear all due forgetting-curve topics' });
+          rows.push({ id: 'gt-ov', start: 1220, end: 1260, fixed: false, accent: 'sage', trimPriority: 1, title: 'Overflow Buffer', subtitle: ovTotal > 0 ? `Absorb ${ovTotal}m from Overflow Bank` : 'Review week error-log trends' });
+        }
+
+        rows.push({ id: 'f-din', start: 1260, end: 1290, fixed: true, accent: 'muted', title: 'Arrive Home from Library + Screen-Free Dinner', subtitle: '30-min dinner (09:00–09:30 PM)' });
+        rows.push({ id: 'gt-n1', start: 1290, end: 1350, fixed: false, accent: 'sage', trimPriority: 1, title: 'Night Consolidation (GT Error Log & Volatile Tables)', subtitle: 'Review today\'s logged GT mistakes & Drugs of Choice' });
+        rows.push({ id: 'gt-n2', start: 1350, end: 1380, fixed: false, accent: 'sage', trimPriority: 2, title: 'Low-Glare Pre-Sleep Wind-Down', subtitle: 'Calm recall before 11:00 PM curfew' });
+        return applyCompression(rows, adj);
+      }
+
+      // PHASES 2, 3 & 4 — REGULAR STUDY DAY (NON-GT)
+      rows.push({ id: 'st-ramp', start: 420, end: 465, fixed: false, accent: 'sage', title: 'Morning Waking Ramp (Active MCQs & Flashcards)', subtitle: 'Medium-intense active start (07:00–07:45) to beat morning sleepiness' });
+      rows.push({ id: 'st-core', start: 465, end: 600, fixed: false, accent: 'sage', title: 'Textbook Triangulation & Conceptual Depth', subtitle: tbBlock.title });
+
+      if (pat === 'SUN') {
+        rows.push({ id: 'st-sun', start: 600, end: 780, fixed: false, accent: 'sage', title: 'Midday Deep Concept, Graphs & Flowcharts (No OPD)', subtitle: ovTotal > 0 ? `Absorb ${ovTotal}m Overflow Bank + textbook summary tables` : 'Deep-dive graphs, histology images & multi-statement mechanisms' });
+      } else {
+        rows.push({ id: 'f-opd1', start: 600, end: 780, fixed: true, accent: 'muted', title: 'Morning OPD (Mon–Sat)', subtitle: 'Fixed clinical posting' });
+      }
+
+      rows.push({ id: 'f-lunch', start: 780, end: 900, fixed: true, accent: 'muted', title: 'Lunch (1–2 PM) + Post-Lunch Adaptation Rest (2–3 PM)', subtitle: 'Afternoon study starts at 03:00 PM' });
+
+      if (pat === 'MWF') {
+        rows.push({ id: 'st-qb1', start: 900, end: 960, fixed: false, accent: 'sage', title: 'Afternoon Deep QBank (Part 1)', subtitle: 'Clinical vignettes & multi-statement MCQs' });
+        rows.push({ id: 'f-opd2', start: 960, end: 1020, fixed: true, accent: 'muted', title: 'Evening OPD (Mon/Wed/Fri)', subtitle: 'Fixed evening clinic' });
+        rows.push({ id: 'st-qb2', start: 1020, end: 1155, fixed: false, accent: 'sage', title: 'Library Evening QBank & Distractor Reverse-Engineering', subtitle: 'Cross-link wrong options back to textbook tables & annotated BTR' });
+        rows.push({ id: 'st-pyq', start: 1155, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20-min distractor review' });
+        rows.push({ id: 'st-ebb', start: 1220, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (40m)', subtitle: 'Spaced repetition due today (D+1, D+3, D+7, D+14, D+30)' });
+      } else if (pat === 'TTS') {
+        rows.push({ id: 'st-qb1', start: 900, end: 1020, fixed: false, accent: 'sage', title: 'Afternoon Textbook & QBank Block', subtitle: 'High-yield clinical vignettes & diagnostic algorithms' });
+        rows.push({ id: 'st-qb2', start: 1020, end: 1125, fixed: false, accent: 'sage', title: 'Library Evening Multi-Statement & Image Drills', subtitle: 'Practice INI-CET combination options + histology/radiology signs' });
+        rows.push({ id: 'st-pyq', start: 1125, end: 1190, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20-min distractor review' });
+        rows.push({ id: 'st-ebb', start: 1190, end: 1260, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Evening Ebbinghaus Revision (70m)', subtitle: 'Spaced repetition due today (D+1, D+3, D+7, D+14, D+30)' });
+      } else {
+        rows.push({ id: 'st-qb', start: 900, end: 1065, fixed: false, accent: 'sage', title: 'Integrated Clinical Vignettes & Graph Marathon', subtitle: 'Mixed subject blocks + textbook exception check' });
+        rows.push({ id: 'st-pyq', start: 1065, end: 1130, fixed: false, accent: 'cyan', protectedSlot: true, badge: 'Protected 45m+20m', title: 'Evening Timed PYQ (45m) + Review (20m)', subtitle: 'Strict 50-MCQ INI-CET timed drill + 20m review' });
+        rows.push({ id: 'st-ebb', start: 1130, end: 1220, fixed: false, accent: 'cyan', protectedSlot: true, isEbbinghaus: true, title: 'Weekly Ebbinghaus Deep Revision (90m)', subtitle: 'Sweep all due & overdue forgetting-curve topics' });
+        rows.push({ id: 'st-ov', start: 1220, end: 1260, fixed: false, accent: 'sage', trimPriority: 1, title: 'Weekly Overflow Buffer', subtitle: ovTotal > 0 ? `Absorb ${ovTotal}m banked Overflow time` : 'Clear spillover chapters & weak tables' });
+      }
+
+      rows.push({ id: 'f-din', start: 1260, end: 1290, fixed: true, accent: 'muted', title: 'Arrive Home from Library + Screen-Free Dinner', subtitle: '30-min dinner (09:00–09:30 PM)' });
+      rows.push({ id: 'st-n1', start: 1290, end: 1350, fixed: false, accent: 'sage', trimPriority: 1, title: 'Night Consolidation (Volatile Tables / DoC / GT Error Log)', subtitle: 'Lock volatile charts, antidotes & error-log pearls' });
+      rows.push({ id: 'st-n2', start: 1350, end: 1380, fixed: false, accent: 'sage', trimPriority: 2, title: 'Low-Glare Pre-Sleep Wind-Down', subtitle: 'Calm recall before 11:00 PM curfew' });
+
+      return applyCompression(rows, adj);
+    }
+
+    // Curfew-Safe Compression: Never touches BTR videos, Protected 45m+20m PYQ, Ebbinghaus, or 11:00 PM Curfew
+    function applyCompression(rows, adj) {
+      if (!adj || !adj.mins) return rows;
+      let toCut = adj.mins;
+      const cloned = rows.map(r => ({ ...r }));
+
+      [1, 2].forEach(prio => {
+        for (const r of cloned) {
+          if (toCut <= 0) break;
+          if (!r.fixed && !r.protectedSlot && r.trimPriority === prio) {
+            const avail = Math.max(0, (r.end - r.start) - 15);
+            const cut = Math.min(avail, toCut);
+            if (cut > 0) {
+              r.end -= cut;
+              r.adjusted = true;
+              toCut -= cut;
+            }
+          }
+        }
+      });
+
+      if (toCut > 0) {
+        for (let i = cloned.length - 1; i >= 0 && toCut > 0; i--) {
+          const r = cloned[i];
+          if (!r.fixed && !r.protectedSlot && !r.isBtr && !r.isEbbinghaus) {
+            const avail = Math.max(0, (r.end - r.start) - 20);
+            const cut = Math.min(avail, toCut);
+            if (cut > 0) {
+              r.end -= cut;
+              r.adjusted = true;
+              toCut -= cut;
+            }
+          }
+        }
+      }
+      return cloned;
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. RENDER PIPELINE
+    // -------------------------------------------------------------------------
+    function renderAll() {
+      const gtData = computeGTSchedule();
+      const btrPlan = computeBtrPlan();
+      const dueEbb = getDueEbbinghaus(state.selectedDate, btrPlan);
+
+      renderHeader(dueEbb);
+      renderToday(gtData, btrPlan, dueEbb);
+      renderBtrTab(btrPlan);
+      renderEbbinghausTab(btrPlan);
+      renderTargetsAndGtTab(gtData);
+      renderBlockedAndBackupTab();
+    }
+
+    function renderHeader(dueEbb) {
+      const d = state.selectedDate;
+      const phase = getPhaseForDate(d);
+      const dt = parseYMD(d);
+      const daysLeft = Math.max(0, diffDays(d, EXAM_DATE));
+
+      const pill = document.getElementById('hdr-phase-pill');
+      pill.textContent = phase.name;
+      pill.className = `pill pill-${phase.accent}`;
+
+      document.getElementById('hdr-countdown').textContent = daysLeft === 0
+        ? 'EXAM DAY · May 23'
+        : `${daysLeft}d to May 23, 2027`;
+
+      document.getElementById('hdr-date-label').textContent = dt.toLocaleDateString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+      });
+      document.getElementById('hdr-date-input').value = d;
+      document.getElementById('tab-ebb-count').textContent = dueEbb.length;
+
+      ['today', 'btr', 'ebbinghaus', 'gt', 'blocked'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('active', t === activeTab);
+        document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== activeTab);
+      });
+    }
+
+    function renderToday(gtData, btrPlan, dueEbb) {
+      const d = state.selectedDate;
+      const dt = parseYMD(d);
+      const phase = getPhaseForDate(d);
+      const pat = getDayPattern(d);
+      const blocked = isBlocked(d);
+      const gtToday = gtData.gtMap[d] || null;
+      const rows = buildTimeline(d, gtData, btrPlan);
+      const checks = state.completedSlots[d] || {};
+
+      document.getElementById('today-heading').textContent = dt.toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+      const opdLabel = pat === 'MWF' ? 'Morning & Evening OPD' : (pat === 'TTS' ? 'Morning OPD only' : 'Sunday · No OPD');
+      document.getElementById('today-sub').textContent = blocked
+        ? `${phase.name} · Blocked Distraction Day (Survival Mode)`
+        : `${phase.name} · ${opdLabel}`;
+
+      // Context Banner
+      const ctxEl = document.getElementById('today-ctx-banner');
+      const ctxTitle = document.getElementById('ctx-title');
+      const ctxDesc = document.getElementById('ctx-desc');
+      const ctxBtn = document.getElementById('ctx-action');
+      ctxBtn.classList.add('hidden');
+
+      if (blocked) {
+        ctxEl.className = 'banner banner-terracotta';
+        ctxTitle.textContent = 'Blocked Distraction Day — Zero-Guilt Survival Mode';
+        ctxDesc.textContent = 'Only 20-min Ebbinghaus maintenance scheduled today. Any scheduled GT auto-shifted forward.';
+        ctxBtn.className = 'btn btn-xs btn-terracotta';
+        ctxBtn.textContent = 'Unblock Day';
+        ctxBtn.onclick = () => toggleBlocked(d);
+      } else if (phase.num === 6) {
+        ctxEl.className = 'banner banner-lavender';
+        ctxTitle.textContent = 'Final 10-Day Simple Muggup Lockdown — Strictly Zero GTs';
+        ctxDesc.textContent = 'Pure volatile tables, Drugs of Choice, annotated BTR, classic images & GT error log only.';
+      } else if (gtToday) {
+        ctxEl.className = 'banner banner-terracotta';
+        ctxTitle.textContent = `Scheduled Grand Test — GT #${gtToday.gtNum}${phase.num === 5 ? ' (15-Day Daily Sprint)' : ''}`;
+        ctxDesc.textContent = gtToday.shiftedFrom
+          ? `Auto-shifted from blocked day (${gtToday.shiftedFrom}). 07:00–10:00 AM full exam slot active.`
+          : 'Unbroken 07:00–10:00 AM exam slot (200 Qs, 4 × 45m). Log score right after to track growth from 98/145.';
+        ctxBtn.className = 'btn btn-xs btn-terracotta';
+        ctxBtn.textContent = 'Log GT Score →';
+        ctxBtn.onclick = () => {
+          switchTab('gt');
+          document.getElementById('gt-f-label').value = `GT #${gtToday.gtNum}`;
+          document.getElementById('gt-f-date').value = d;
+        };
+      } else {
+        ctxEl.className = 'banner hidden';
+      }
+
+      // Adjustment Banner
+      const adj = state.dayAdjustments[d];
+      const adjBanner = document.getElementById('today-adj-banner');
+      if (adj && adj.summary) {
+        adjBanner.classList.remove('hidden');
+        document.getElementById('adj-msg').textContent = adj.summary;
+      } else {
+        adjBanner.classList.add('hidden');
+      }
+
+      // Render Timeline Rows (Responsive Desktop Side-by-Side & Mobile Stacked Badge)
+      document.getElementById('today-timeline').innerHTML = rows.map(r => {
+        const done = !!checks[r.id];
+        const dur = Math.max(0, r.end - r.start);
+        const timeText = `${formatClock(r.start)} – ${formatClock(r.end)}`;
+
+        if (r.fixed) {
+          return `
+            <div class="timeline-row fixed-row accent-border-muted">
+              <div class="row-time-col">
+                <div class="row-time-text mono">${timeText}</div>
+              </div>
+              <div class="row-accent-bar bar-muted"></div>
+              <div class="row-content">
+                <div class="row-header-mobile">
+                  <span class="pill pill-muted mono">${timeText} · ${formatHM(dur)}</span>
+                </div>
+                <div class="row-title">${escapeHtml(r.title)}</div>
+                <div class="row-sub">${escapeHtml(r.subtitle)}</div>
+              </div>
+              <span class="mono desktop-check" style="font-size:11px;color:var(--muted);">${formatHM(dur)}</span>
+            </div>
+          `;
+        }
+
+        // Inline Ebbinghaus Due List inside Evening Ebbinghaus Revision Block
+        let ebbInline = '';
+        if (r.isEbbinghaus) {
+          if (dueEbb.length === 0) {
+            ebbInline = `
+              <div class="ebb-inline-box" onclick="event.stopPropagation()">
+                <div style="font-size:12px;color:var(--sage);">✓ All Ebbinghaus reviews clear for this date! Preview tomorrow's D+1 cards or add a topic below.</div>
+                <form onsubmit="handleInlineEbbAdd(event)" style="display:flex;gap:6px;margin-top:2px;">
+                  <input type="text" id="inline-ebb-input" class="input input-sm" placeholder="+ Quick-log topic (D+1 tomorrow)" />
+                  <button type="submit" class="btn btn-xs btn-cyan">Add</button>
+                </form>
+              </div>
+            `;
+          } else {
+            const shown = dueEbb.slice(0, 6);
+            ebbInline = `
+              <div class="ebb-inline-box" onclick="event.stopPropagation()">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px;font-size:11.5px;color:var(--cyan);font-weight:600;">
+                  <span>${dueEbb.length} topic${dueEbb.length === 1 ? '' : 's'} due today on your forgetting curve</span>
+                  ${dueEbb.length > 6 ? `<button class="btn btn-xs btn-cyan" onclick="switchTab('ebbinghaus')">View all ${dueEbb.length}</button>` : ''}
+                </div>
+                ${shown.map(item => `
+                  <div class="ebb-inline-item">
+                    <div class="ebb-inline-left">
+                      <span class="pill ${item.overdueDays > 0 ? 'pill-terracotta' : 'pill-cyan'} mono" style="padding:1px 6px;font-size:10px;">
+                        ${item.intervalLabel}${item.overdueDays > 0 ? ` +${item.overdueDays}d` : ''}
+                      </span>
+                      <span class="ebb-inline-name">${escapeHtml(item.topic)}</span>
+                    </div>
+                    <div style="display:flex;gap:5px;flex-shrink:0;">
+                      <button class="btn btn-xs btn-sage" title="Reviewed — advance interval"
+                        onclick="advanceEbb('${item.id}', ${item.projected}, '${item.moduleId || ''}', ${item.stage}, '${item.baseDate}', event)">✓</button>
+                      <button class="btn btn-xs btn-amber" title="Forgot — reset to D+1"
+                        onclick="resetEbb('${item.id}', ${item.projected}, '${item.moduleId || ''}', event)">↺</button>
+                    </div>
+                  </div>
+                `).join('')}
+                <form onsubmit="handleInlineEbbAdd(event)" style="display:flex;gap:6px;margin-top:2px;">
+                  <input type="text" id="inline-ebb-input" class="input input-sm" placeholder="+ Quick-log topic (D+1 tomorrow)" />
+                  <button type="submit" class="btn btn-xs btn-cyan">Add</button>
+                </form>
+              </div>
+            `;
+          }
+        }
+
+        const badgeHtml = r.badge
+          ? `<span class="pill pill-${r.accent === 'terracotta' ? 'terracotta' : 'cyan'}" style="padding:1px 7px;font-size:10px;">${escapeHtml(r.badge)}</span>`
+          : '';
+
+        return `
+          <div class="timeline-row study-row accent-border-${r.accent} ${done ? 'is-done' : ''}" onclick="toggleSlot('${r.id}')">
+            <div class="row-time-col">
+              <div class="row-time-text mono">${timeText}</div>
+              <div class="row-dur-text mono">${formatHM(dur)}${r.adjusted ? ' · trimmed' : ''}</div>
+            </div>
+            <div class="row-accent-bar bar-${r.accent}"></div>
+            <div class="row-content">
+              <div class="row-header-mobile">
+                <span class="pill pill-${r.accent} mono">${timeText} · ${formatHM(dur)}${r.adjusted ? ' (trimmed)' : ''}</span>
+                <div class="check-circle" aria-label="Toggle block done">✓</div>
+              </div>
+              <div class="row-title-wrap">
+                <span class="row-title">${escapeHtml(r.title)}</span>
+                ${badgeHtml}
+              </div>
+              <div class="row-sub">${escapeHtml(r.subtitle)}</div>
+              ${ebbInline}
+            </div>
+            <div class="check-circle desktop-check" aria-label="Toggle block done">✓</div>
+          </div>
+        `;
+      }).join('');
+
+      // Sidebar Metrics
+      const studyRows = rows.filter(r => !r.fixed);
+      const doneRows = studyRows.filter(r => !!checks[r.id]);
+      const plannedMins = studyRows.reduce((s, r) => s + Math.max(0, r.end - r.start), 0);
+      const doneMins = doneRows.reduce((s, r) => s + Math.max(0, r.end - r.start), 0);
+
+      document.getElementById('today-blocks-badge').textContent = `${doneRows.length} / ${studyRows.length} blocks`;
+      document.getElementById('side-today-hrs').textContent = `${(doneMins / 60).toFixed(1)} / ${(plannedMins / 60).toFixed(1)}h`;
+
+      // Sidebar Card 2: GT Readiness (Latest GT or 98/145 Baseline)
+      const sortedGts = [...state.gtLogs].sort((a, b) => a.date.localeCompare(b.date));
+      const latestGt = sortedGts[sortedGts.length - 1];
+      const gtWrong = Math.max(0, latestGt.attempts - latestGt.correct);
+      const gtAcc = latestGt.attempts > 0 ? ((latestGt.correct / latestGt.attempts) * 100).toFixed(1) : '0.0';
+      const gtNet = (latestGt.correct - gtWrong / 3).toFixed(1);
+      const targetPct = Math.min(100, Math.round((latestGt.correct / 150) * 100));
+      const nextGt = gtData.schedule.find(g => g.date >= d);
+
+      document.getElementById('side-gt-cadence').textContent = latestGt.id === 'gt-baseline' ? 'NEET PG \'26 Baseline' : latestGt.label;
+      document.getElementById('side-gt-score').textContent = `${latestGt.correct} / ${latestGt.attempts}`;
+      document.getElementById('side-gt-acc').textContent = `${gtAcc}% · ${gtNet} net`;
+      document.getElementById('side-gt-bar').style.width = `${targetPct}%`;
+      document.getElementById('side-gt-bar').style.background = latestGt.correct >= 140 ? 'var(--sage)' : 'var(--terracotta)';
+      document.getElementById('side-next-gt').textContent = phase.num === 6
+        ? '0 GTs (Muggup Lockdown)'
+        : (nextGt ? `GT #${nextGt.gtNum} (${nextGt.date.slice(5)})` : 'All GTs complete');
+
+      // Sidebar Card 3: BTR / Phase Progress
+      const btrTotals = getBtrTotals();
+      const speed = state.playbackSpeed || 1.25;
+      const btrCtrl = document.getElementById('side-btr-controls');
+
+      if (phase.num === 1) {
+        const btrPct = Math.round((btrTotals.watched / btrTotals.total) * 100);
+        const remActive = btrPlan.dates.filter(x => x >= d && !isBlocked(x)).length || 1;
+        const pace = Math.round((btrTotals.remaining / speed) / remActive);
+        const daysExp = Math.max(1, diffDays(d, '2026-12-15'));
+
+        document.getElementById('side-phase-lbl').textContent = 'BTR Sprint Progress';
+        document.getElementById('side-phase-lbl').style.color = 'var(--amber)';
+        document.getElementById('side-phase-meta').textContent = `${daysExp}d to Dec 15`;
+        document.getElementById('side-phase-meta').style.color = 'var(--amber)';
+        document.getElementById('side-phase-big').textContent = `${btrPct}%`;
+        document.getElementById('side-phase-sub').textContent = `${btrTotals.watched.toLocaleString()} / ${btrTotals.total.toLocaleString()}m`;
+        document.getElementById('side-phase-bar').style.width = `${btrPct}%`;
+        document.getElementById('side-phase-bar').style.background = 'var(--amber)';
+        document.getElementById('side-btr-pace').textContent = `${pace} real m/d`;
+        btrCtrl.classList.remove('hidden');
+      } else if (phase.num === 6) {
+        const mugDay = Math.min(10, Math.max(1, diffDays('2027-05-13', d) + 1));
+        document.getElementById('side-phase-lbl').textContent = '10-Day Muggup Lockdown';
+        document.getElementById('side-phase-lbl').style.color = 'var(--lavender)';
+        document.getElementById('side-phase-meta').textContent = 'ZERO GTs';
+        document.getElementById('side-phase-meta').style.color = 'var(--lavender)';
+        document.getElementById('side-phase-big').textContent = `Day ${mugDay} / 10`;
+        document.getElementById('side-phase-sub').textContent = 'Simple recall only';
+        document.getElementById('side-phase-bar').style.width = `${mugDay * 10}%`;
+        document.getElementById('side-phase-bar').style.background = 'var(--lavender)';
+        btrCtrl.classList.add('hidden');
+      } else {
+        const loggedGTs = state.gtLogs.filter(g => g.id !== 'gt-baseline').length;
+        const totalGTs = gtData.schedule.length;
+        const pctGT = totalGTs > 0 ? Math.min(100, Math.round((loggedGTs / totalGTs) * 100)) : 0;
+
+        document.getElementById('side-phase-lbl').textContent = phase.short;
+        document.getElementById('side-phase-lbl').style.color = `var(--${phase.accent})`;
+        document.getElementById('side-phase-meta').textContent = phase.cadence;
+        document.getElementById('side-phase-meta').style.color = `var(--${phase.accent})`;
+        document.getElementById('side-phase-big').textContent = `${loggedGTs} / ${totalGTs}`;
+        document.getElementById('side-phase-sub').textContent = 'GTs logged';
+        document.getElementById('side-phase-bar').style.width = `${pctGT}%`;
+        document.getElementById('side-phase-bar').style.background = `var(--${phase.accent})`;
+        btrCtrl.classList.add('hidden');
+      }
+
+      [[1.0, 'spd-100'], [1.25, 'spd-125'], [1.5, 'spd-150']].forEach(([val, cls]) => {
+        document.querySelectorAll(`.${cls}`).forEach(el => el.classList.toggle('active', state.playbackSpeed === val));
+      });
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. TAB 2: BTR VIDEOS RENDERER
+    // -------------------------------------------------------------------------
+    function renderBtrTab(btrPlan) {
+      const totals = getBtrTotals();
+      const speed = state.playbackSpeed || 1.25;
+      const realRem = Math.round(totals.remaining / speed);
+      const pace = btrPlan.activeDays > 0 ? Math.round(realRem / btrPlan.activeDays) : 0;
+      const pct = Math.round((totals.watched / totals.total) * 100);
+
+      document.getElementById('btr-k-total').textContent = `${totals.total.toLocaleString()}m`;
+      document.getElementById('btr-k-hm').textContent = `${formatHM(totals.total)} · 27 mods`;
+      document.getElementById('btr-k-watched').textContent = `${totals.watched.toLocaleString()}m`;
+      document.getElementById('btr-k-left').textContent = `${totals.remaining.toLocaleString()}m left`;
+      document.getElementById('btr-k-real').textContent = formatHM(realRem);
+      document.getElementById('btr-k-real-sub').textContent = `${realRem.toLocaleString()}m @ ${speed}x`;
+      document.getElementById('btr-k-pace').textContent = `${pace}m / d`;
+      document.getElementById('btr-k-days').textContent = `${btrPlan.activeDays} active sprint days`;
+      document.getElementById('btr-master-bar').style.width = `${pct}%`;
+
+      const warn = document.getElementById('btr-pace-warn');
+      if (btrPlan.overflowReal > 0) {
+        warn.classList.remove('hidden');
+        warn.textContent = `⚠ ${btrPlan.overflowReal}m real watch time exceeds remaining sprint capacity at ${speed}x — switch to 1.25x/1.5x or free a blocked Dec day.`;
+      } else {
+        warn.classList.add('hidden');
+      }
+
+      document.getElementById('btr-v-mods').classList.toggle('active', btrView === 'modules');
+      document.getElementById('btr-v-days').classList.toggle('active', btrView === 'daily');
+      document.getElementById('btr-modules-wrap').classList.toggle('hidden', btrView !== 'modules');
+      document.getElementById('btr-daily-wrap').classList.toggle('hidden', btrView !== 'daily');
+
+      document.getElementById('btr-modules-wrap').innerHTML = BTR_CATEGORIES.map(cat => {
+        const mods = BTR_MODULES.filter(m => m.cat === cat.id);
+        const cTotal = mods.reduce((s, m) => s + state.btr[m.id].total, 0);
+        const cWatched = mods.reduce((s, m) => s + Math.min(state.btr[m.id].watched, state.btr[m.id].total), 0);
+
+        return `
+          <div class="card-flush">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <span style="font-size:14px;font-weight:600;">${cat.name}</span>
+              <span class="mono" style="font-size:12px;color:var(--muted);">${cWatched.toLocaleString()} / ${cTotal.toLocaleString()}m</span>
+            </div>
+            <div>
+              ${mods.map(m => {
+                const st = state.btr[m.id];
+                const done = st.watched >= st.total;
+                const mPct = Math.min(100, Math.round((st.watched / st.total) * 100));
+                return `
+                  <div class="list-row">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:130px;flex:1;">
+                      <div>
+                        <span style="font-size:13.5px;font-weight:600;color:${done ? 'var(--sage)' : 'var(--text)'};">${m.name}</span>
+                        <span class="mono" style="font-size:11px;color:var(--muted);margin-left:6px;">${mPct}%</span>
+                      </div>
+                      <div style="width:90px;max-width:100%;">
+                        <div class="progress-track" style="margin-top:0;">
+                          <div class="progress-fill" style="width:${mPct}%;background:${done ? 'var(--sage)' : 'var(--amber)'};"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                      <div style="display:inline-flex;align-items:center;gap:3px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:3px 7px;" class="mono">
+                        <input type="number" min="0" max="${st.total}" value="${st.watched}" aria-label="Watched ${m.name}"
+                          onchange="editBtr('${m.id}','watched',this.value)"
+                          style="width:42px;background:transparent;border:none;text-align:right;font-size:12px;outline:none;" />
+                        <span style="color:var(--muted);font-size:11px;">/</span>
+                        <input type="number" min="1" max="2000" value="${st.total}" aria-label="Total ${m.name}"
+                          onchange="editBtr('${m.id}','total',this.value)"
+                          style="width:42px;background:transparent;border:none;font-size:12px;color:var(--muted);outline:none;" />
+                        <span style="color:var(--muted);font-size:10px;">m</span>
+                      </div>
+                      <button class="btn btn-xs mono" onclick="bumpBtr('${m.id}', 15)">+15m</button>
+                      <button class="btn btn-xs mono" onclick="bumpBtr('${m.id}', 30)">+30m</button>
+                      <button class="btn btn-xs ${done ? 'btn-sage' : ''}" onclick="toggleBtrDone('${m.id}')">${done ? '✓ Done' : 'Complete'}</button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('btr-daily-wrap').innerHTML = btrPlan.dates.map(d => {
+        const dp = btrPlan.dayPlans[d];
+        const lbl = parseYMD(d).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        if (dp.blocked) {
+          return `
+            <div class="list-row" style="cursor:pointer;opacity:0.65;" onclick="jumpToDate('${d}')">
+              <span class="mono" style="width:110px;font-size:12px;color:var(--terracotta);">${lbl}</span>
+              <span style="flex:1;font-size:12.5px;color:var(--muted);">Blocked Day — 0m videos assigned</span>
+              <span class="mono" style="font-size:12px;color:var(--terracotta);">0m</span>
+            </div>
+          `;
+        }
+        const merged = [];
+        dp.slots.flat().forEach(sl => {
+          const ex = merged.find(x => x.id === sl.id);
+          if (ex) ex.rawMins += sl.rawMins;
+          else merged.push({ ...sl });
+        });
+        const modStr = merged.length ? merged.map(x => `${x.name} (${x.rawMins}m)`).join(' · ') : 'Buffer / Annotation Day';
+        return `
+          <div class="list-row" style="cursor:pointer;${d === state.selectedDate ? 'background:rgba(229,181,103,0.08);' : ''}" onclick="jumpToDate('${d}')">
+            <span class="mono" style="width:110px;font-size:12px;font-weight:600;color:${d === state.selectedDate ? 'var(--amber)' : 'var(--text)'};">${lbl}</span>
+            <span style="flex:1;font-size:12.5px;color:var(--muted);">${escapeHtml(modStr)}</span>
+            <span class="mono" style="font-size:12px;">${dp.totalReal}m real <span style="color:var(--muted);">(${dp.totalRaw}m)</span></span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. TAB 3: EBBINGHAUS CURVE RENDERER (RESPONSIVE SVG)
+    // -------------------------------------------------------------------------
+    function renderEbbinghausTab(btrPlan) {
+      const today = state.selectedDate;
+      const dInput = document.getElementById('ebb-f-date');
+      if (!dInput.value) dInput.value = today;
+
+      const activeCnt = state.ebbinghaus.filter(x => x.stage < EBB_INTERVALS.length).length;
+      const mastCnt = state.ebbinghaus.filter(x => x.stage >= EBB_INTERVALS.length).length;
+      document.getElementById('ebb-stat-active').textContent = `${activeCnt} active topics tracked`;
+      document.getElementById('ebb-stat-mastered').textContent = `${mastCnt} mastered (D+30+)`;
+
+      // Responsive Ebbinghaus Retention Curve SVG (viewBox scales cleanly down to 320px!)
+      document.getElementById('ebb-svg-wrap').innerHTML = `
+        <svg viewBox="0 0 460 160" role="img" aria-label="Ebbinghaus Forgetting Curve">
+          <line x1="36" y1="22" x2="444" y2="22" stroke="#414854" stroke-width="0.6" stroke-dasharray="3,3" />
+          <line x1="36" y1="56" x2="444" y2="56" stroke="#7CB896" stroke-opacity="0.32" stroke-width="0.8" stroke-dasharray="4,3" />
+          <line x1="36" y1="90" x2="444" y2="90" stroke="#414854" stroke-width="0.6" stroke-dasharray="3,3" />
+          <line x1="36" y1="128" x2="444" y2="128" stroke="#414854" stroke-width="1" />
+
+          <text x="30" y="25" text-anchor="end" fill="#9AA3B2" font-size="9" font-family="monospace">100%</text>
+          <text x="30" y="59" text-anchor="end" fill="#7CB896" font-size="9" font-family="monospace">80%</text>
+          <text x="30" y="93" text-anchor="end" fill="#9AA3B2" font-size="9" font-family="monospace">50%</text>
+          <text x="30" y="131" text-anchor="end" fill="#9AA3B2" font-size="9" font-family="monospace">20%</text>
+
+          <path d="M 42 22 Q 76 96 146 114 T 442 126" fill="none" stroke="#DF7A6B" stroke-width="1.8" stroke-dasharray="4,4" opacity="0.85" />
+          <path d="M 42 22 Q 64 58 84 64 L 84 24 Q 114 48 146 52 L 146 24 Q 186 44 226 48 L 226 23 Q 274 39 320 42 L 320 23 Q 380 35 438 37"
+                fill="none" stroke="#6CB6D9" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+
+          <circle cx="84" cy="24" r="3.8" fill="#6CB6D9" stroke="#23272E" stroke-width="1.5" />
+          <circle cx="146" cy="24" r="3.8" fill="#6CB6D9" stroke="#23272E" stroke-width="1.5" />
+          <circle cx="226" cy="23" r="3.8" fill="#6CB6D9" stroke="#23272E" stroke-width="1.5" />
+          <circle cx="320" cy="23" r="3.8" fill="#6CB6D9" stroke="#23272E" stroke-width="1.5" />
+          <circle cx="438" cy="37" r="3.8" fill="#7CB896" stroke="#23272E" stroke-width="1.5" />
+
+          <text x="42" y="147" text-anchor="middle" fill="#9AA3B2" font-size="9" font-family="monospace">D0</text>
+          <text x="84" y="147" text-anchor="middle" fill="#6CB6D9" font-size="9" font-family="monospace">D+1</text>
+          <text x="146" y="147" text-anchor="middle" fill="#6CB6D9" font-size="9" font-family="monospace">D+3</text>
+          <text x="226" y="147" text-anchor="middle" fill="#6CB6D9" font-size="9" font-family="monospace">D+7</text>
+          <text x="320" y="147" text-anchor="middle" fill="#6CB6D9" font-size="9" font-family="monospace">D+14</text>
+          <text x="434" y="147" text-anchor="middle" fill="#7CB896" font-size="9" font-family="monospace">D+30</text>
+        </svg>
+      `;
+
+      ['due', 'upcoming', 'mastered', 'all'].forEach(f => {
+        document.getElementById(`ef-${f}`).classList.toggle('active', ebbFilter === f);
+      });
+
+      const dueAll = getDueEbbinghaus(today, btrPlan);
+      let items = [];
+
+      if (ebbFilter === 'due') {
+        items = dueAll;
+      } else if (ebbFilter === 'upcoming') {
+        const max7 = addDays(today, 7);
+        items = state.ebbinghaus
+          .filter(x => x.stage < EBB_INTERVALS.length && x.nextDue > today && x.nextDue <= max7)
+          .sort((a, b) => a.nextDue.localeCompare(b.nextDue))
+          .map(x => ({ ...x, overdueDays: 0, intervalLabel: `D+${EBB_INTERVALS[x.stage]}`, projected: false }));
+      } else if (ebbFilter === 'mastered') {
+        items = state.ebbinghaus
+          .filter(x => x.stage >= EBB_INTERVALS.length)
+          .map(x => ({ ...x, overdueDays: 0, intervalLabel: 'Mastered', projected: false }));
+      } else {
+        items = [...state.ebbinghaus]
+          .sort((a, b) => (a.stage >= 5 ? 1 : 0) - (b.stage >= 5 ? 1 : 0) || a.nextDue.localeCompare(b.nextDue))
+          .map(x => ({
+            ...x,
+            overdueDays: x.stage < 5 && x.nextDue < today ? diffDays(x.nextDue, today) : 0,
+            intervalLabel: x.stage >= 5 ? 'Mastered' : `D+${EBB_INTERVALS[x.stage]}`,
+            projected: false
+          }));
+      }
+
+      document.getElementById('ebb-list-meta').textContent = `${items.length} topic${items.length === 1 ? '' : 's'} · ${today}`;
+
+      const wrap = document.getElementById('ebb-list-wrap');
+      if (!items.length) {
+        wrap.innerHTML = `<div style="padding:24px 16px;text-align:center;font-size:13px;color:var(--muted);">No topics in this filter.</div>`;
+        return;
+      }
+
+      wrap.innerHTML = items.map(item => {
+        const mastered = item.stage >= EBB_INTERVALS.length;
+        const badgeCls = mastered ? 'pill-sage' : (item.overdueDays > 0 ? 'pill-terracotta' : 'pill-cyan');
+        return `
+          <div class="list-row">
+            <div style="flex:1;min-width:190px;">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:7px;">
+                <span class="pill ${badgeCls} mono">${item.intervalLabel}${item.overdueDays > 0 ? ` · ${item.overdueDays}d late` : ''}</span>
+                <span style="font-size:13.5px;font-weight:600;">${escapeHtml(item.topic)}</span>
+                ${item.projected ? '<span class="pill pill-muted">Auto</span>' : ''}
+              </div>
+              <div class="mono" style="font-size:11.5px;color:var(--muted);margin-top:4px;">
+                ${escapeHtml(item.subject)} · Base: ${item.baseDate} · ${mastered ? 'Completed D+30' : `Due: ${item.nextDue}`}
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              ${!mastered ? `
+                <button class="btn btn-sm btn-sage" onclick="advanceEbb('${item.id}', ${item.projected}, '${item.moduleId || ''}', ${item.stage}, '${item.baseDate}', event)">Reviewed ✓</button>
+                <button class="btn btn-sm btn-amber" onclick="resetEbb('${item.id}', ${item.projected}, '${item.moduleId || ''}', event)">Forgot ↺</button>
+              ` : `
+                <button class="btn btn-sm btn-amber" onclick="resetEbb('${item.id}', false, '', event)">Restart D+1</button>
+              `}
+              ${!item.projected ? `<button class="btn btn-xs" onclick="deleteEbb('${item.id}', event)" aria-label="Delete">✕</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 11. TAB 4: UPCOMING TARGETS & GTs RENDERER (98/145 ANCHOR SVG CHART)
+    // -------------------------------------------------------------------------
+    function renderTargetsAndGtTab(gtData) {
+      const gtDateEl = document.getElementById('gt-f-date');
+      if (!gtDateEl.value) gtDateEl.value = state.selectedDate;
+
+      // Responsive Inline SVG GT Trend Chart (Anchored at 98 Corrects / 145 Attempts)
+      const logs = [...state.gtLogs].sort((a, b) => a.date.localeCompare(b.date));
+      const W = 480, H = 195, pL = 34, pR = 16, pT = 18, pB = 28;
+      const pw = W - pL - pR, ph = H - pT - pB;
+      const yS = v => pT + ph - (Math.max(0, Math.min(200, v)) / 200) * ph;
+      const xS = i => logs.length <= 1 ? pL + pw / 2 : pL + (i / (logs.length - 1)) * pw;
+
+      let grid = [0, 50, 100, 150, 200].map(v => `
+        <line x1="${pL}" y1="${yS(v)}" x2="${W - pR}" y2="${yS(v)}" stroke="#414854" stroke-width="0.6" stroke-dasharray="${v === 0 ? '' : '3,3'}" />
+        <text x="${pL - 5}" y="${yS(v) + 3}" text-anchor="end" fill="#9AA3B2" font-size="9" font-family="monospace">${v}</text>
+      `).join('');
+
+      // Target reference bands: 170 attempts & 145 corrects
+      grid += `
+        <line x1="${pL}" y1="${yS(170)}" x2="${W - pR}" y2="${yS(170)}" stroke="#6CB6D9" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="4,4" />
+        <text x="${W - pR}" y="${yS(170) - 4}" text-anchor="end" fill="#6CB6D9" font-size="8.5" font-family="monospace">Target 165–180 att</text>
+        <line x1="${pL}" y1="${yS(145)}" x2="${W - pR}" y2="${yS(145)}" stroke="#7CB896" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="4,4" />
+        <text x="${W - pR}" y="${yS(145) - 4}" text-anchor="end" fill="#7CB896" font-size="8.5" font-family="monospace">Target 140–155+ C</text>
+      `;
+
+      const attPts = logs.map((g, i) => `${xS(i)},${yS(g.attempts)}`).join(' ');
+      const corPts = logs.map((g, i) => `${xS(i)},${yS(g.correct)}`).join(' ');
+      const lines = logs.length > 1 ? `
+        <polyline fill="none" stroke="#6CB6D9" stroke-width="2.2" points="${attPts}" />
+        <polyline fill="none" stroke="#7CB896" stroke-width="2.2" points="${corPts}" />
+      ` : '';
+
+      const pts = logs.map((g, i) => {
+        const x = xS(i), ya = yS(g.attempts), yc = yS(g.correct);
+        const lbl = g.id === 'gt-baseline' ? 'Baseline' : (g.label.length > 10 ? g.date.slice(5) : g.label);
+        return `
+          <circle cx="${x}" cy="${ya}" r="4.2" fill="#6CB6D9" stroke="#23272E" stroke-width="1.5"><title>${escapeHtml(g.label)}: ${g.attempts} solved</title></circle>
+          <text x="${x}" y="${ya - 8}" text-anchor="middle" fill="#6CB6D9" font-size="9" font-family="monospace">${g.attempts}</text>
+          <circle cx="${x}" cy="${yc}" r="4.2" fill="#7CB896" stroke="#23272E" stroke-width="1.5"><title>${escapeHtml(g.label)}: ${g.correct} correct</title></circle>
+          <text x="${x}" y="${yc + 14}" text-anchor="middle" fill="#7CB896" font-size="9" font-family="monospace">${g.correct}</text>
+          <text x="${x}" y="${H - 7}" text-anchor="middle" fill="#9AA3B2" font-size="8.5" font-family="monospace">${escapeHtml(lbl)}</text>
+        `;
+      }).join('');
+
+      document.getElementById('gt-svg-wrap').innerHTML = `
+        <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="GT Progress Trend Chart">
+          ${grid}${lines}${pts}
+        </svg>
+      `;
+
+      // GT History List
+      document.getElementById('gt-history-wrap').innerHTML = [...logs].reverse().map(g => {
+        const wrong = Math.max(0, g.attempts - g.correct);
+        const unatt = Math.max(0, 200 - g.attempts);
+        const net = (g.correct - wrong / 3).toFixed(1);
+        const acc = g.attempts > 0 ? ((g.correct / g.attempts) * 100).toFixed(1) : '0.0';
+        return `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border-soft);">
+            <div style="min-width:0;flex:1;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:13.5px;font-weight:600;">${escapeHtml(g.label)}</span>
+                <span class="mono" style="font-size:11px;color:var(--muted);">${g.date}</span>
+              </div>
+              <div class="mono" style="font-size:11.5px;color:var(--muted);margin-top:2px;">
+                ${g.attempts}/200 solved · <span style="color:var(--sage);">${g.correct}C</span> / <span style="color:var(--terracotta);">${wrong}W</span> / ${unatt}U · ${acc}% acc
+              </div>
+              ${g.weak ? `<div style="font-size:11.5px;color:var(--muted);margin-top:2px;">${escapeHtml(g.weak)}</div>` : ''}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+              <div style="text-align:right;">
+                <div class="mono" style="font-size:14px;font-weight:700;color:var(--cyan);">${net}</div>
+                <div style="font-size:10px;color:var(--muted);">INI Net</div>
+              </div>
+              ${g.id !== 'gt-baseline' ? `<button class="btn btn-xs" onclick="deleteGT('${g.id}')" aria-label="Delete">✕</button>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Active Weekly Textbook/PYQ Checklist
+      const tb = getTextbookBlock(state.selectedDate);
+      document.getElementById('wk-target-sub').textContent = `${tb.start.slice(5)} → ${tb.end.slice(5)} · ${tb.title}`;
+      document.getElementById('wk-checklist-wrap').innerHTML = tb.tasks.map((task, idx) => {
+        const key = `${tb.id}-${idx}`;
+        const done = !!state.weeklyChecks[key];
+        return `
+          <div onclick="toggleWeeklyCheck('${key}')" style="cursor:pointer;display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid ${done ? 'rgba(124,184,150,0.4)' : 'var(--border-soft)'};">
+            <div class="check-circle" style="${done ? 'background:var(--sage);border-color:var(--sage);color:var(--bg);' : ''}width:20px;height:20px;font-size:11px;">✓</div>
+            <span style="font-size:12.5px;${done ? 'text-decoration:line-through;color:var(--muted);' : 'color:var(--text);'}">${escapeHtml(task)}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Personal Upcoming Targets
+      const ctWrap = document.getElementById('custom-targets-wrap');
+      if (!state.customTargets.length) {
+        ctWrap.innerHTML = `<div style="font-size:12px;color:var(--muted);">No custom targets yet. Add one above.</div>`;
+      } else {
+        ctWrap.innerHTML = state.customTargets.map(ct => `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border-radius:10px;background:var(--bg);border:1px solid var(--border-soft);">
+            <div onclick="toggleCustomTarget('${ct.id}')" style="cursor:pointer;display:flex;align-items:center;gap:9px;flex:1;min-width:0;">
+              <div class="check-circle" style="${ct.done ? 'background:var(--sage);border-color:var(--sage);color:var(--bg);' : ''}width:20px;height:20px;font-size:11px;">✓</div>
+              <span style="font-size:12.5px;word-break:break-word;${ct.done ? 'text-decoration:line-through;color:var(--muted);' : ''}">${escapeHtml(ct.text)}</span>
+            </div>
+            <button class="btn btn-xs" onclick="deleteCustomTarget('${ct.id}')" aria-label="Delete">✕</button>
+          </div>
+        `).join('');
+      }
+
+      // 6-Phase Roadmap Cards
+      const curPhase = getPhaseForDate(state.selectedDate);
+      document.getElementById('phases-grid').innerHTML = PHASES.map(p => {
+        const gtCnt = gtData.schedule.filter(g => g.phaseNum === p.num).length;
+        const cad = p.num === 4 ? `GT Every ${state.phase4Step} Days` : p.cadence;
+        const activeBorder = curPhase.num === p.num ? `border-color:var(--${p.accent});` : '';
+        return `
+          <div onclick="jumpToDate('${p.start}')" style="cursor:pointer;background:var(--bg);border:1px solid var(--border);${activeBorder}border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">
+              <span class="pill pill-${p.accent}" style="font-size:10.5px;">${p.short}</span>
+              <span class="mono" style="font-size:11px;color:var(--muted);">${gtCnt} GT${gtCnt === 1 ? '' : 's'}</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;">${p.name}</div>
+            <div class="mono" style="font-size:11px;color:var(--text);opacity:0.85;">${p.start.slice(5)} → ${p.end.slice(5)} · ${cad}</div>
+            <p style="font-size:11.5px;color:var(--muted);line-height:1.45;">${p.desc}</p>
+          </div>
+        `;
+      }).join('');
+
+      // 14-Day Horizon Preview
+      const start14 = state.selectedDate;
+      const end14 = addDays(start14, 13) <= EXAM_DATE ? addDays(start14, 13) : EXAM_DATE;
+      document.getElementById('horizon-range').textContent = `${start14} → ${end14}`;
+
+      let hHtml = '';
+      for (let i = 0; i < 14; i++) {
+        const dStr = addDays(start14, i);
+        if (dStr > EXAM_DATE) break;
+        const dt = parseYMD(dStr);
+        const dow = dt.toLocaleDateString('en-US', { weekday: 'short' });
+        const md = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const blk = isBlocked(dStr);
+        const gt = gtData.gtMap[dStr];
+        const ph = getPhaseForDate(dStr);
+
+        let tagHtml = `<span style="font-size:11px;color:var(--sage);">Study + PYQ</span>`;
+        let bStyle = 'border-color:var(--border);';
+
+        if (dStr === EXAM_DATE) {
+          tagHtml = `<span style="font-size:11px;font-weight:700;color:var(--sage);">EXAM DAY</span>`;
+          bStyle = 'border-color:var(--sage);';
+        } else if (blk) {
+          tagHtml = `<span style="font-size:11px;font-weight:600;color:var(--terracotta);">Blocked</span>`;
+          bStyle = 'border-color:rgba(223,122,107,0.5);';
+        } else if (gt) {
+          tagHtml = `<span class="mono" style="font-size:11px;font-weight:700;color:var(--terracotta);">GT #${gt.gtNum}</span>`;
+          bStyle = 'border-color:rgba(223,122,107,0.5);';
+        } else if (ph.num === 1) {
+          tagHtml = `<span style="font-size:11px;color:var(--amber);">BTR Sprint</span>`;
+        } else if (ph.num === 6) {
+          tagHtml = `<span style="font-size:11px;color:var(--lavender);">Muggup (0 GT)</span>`;
+          bStyle = 'border-color:rgba(179,157,219,0.45);';
+        }
+
+        hHtml += `
+          <div onclick="jumpToDate('${dStr}')" style="cursor:pointer;background:var(--bg);border:1px solid;${bStyle}border-radius:10px;padding:9px;display:flex;flex-direction:column;gap:4px;">
+            <div class="mono" style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);">
+              <span>${dow}</span><span>${md}</span>
+            </div>
+            <div>${tagHtml}</div>
+          </div>
+        `;
+      }
+      document.getElementById('horizon-grid').innerHTML = hHtml;
+    }
+
+    // -------------------------------------------------------------------------
+    // 12. TAB 5: BLOCKED DAYS & BACKUP RENDERER
+    // -------------------------------------------------------------------------
+    function renderBlockedAndBackupTab() {
+      document.getElementById('dec-cap-pill').textContent = `${state.blockedDec.length} / 7`;
+      document.getElementById('feb-cap-pill').textContent = `${state.blockedFeb.length} / 7`;
+      renderMiniCal('cal-dec', 2026, 11, state.blockedDec);
+      renderMiniCal('cal-feb', 2027, 1, state.blockedFeb);
+
+      document.getElementById('p4-cad-3').classList.toggle('active', state.phase4Step === 3);
+      document.getElementById('p4-cad-2').classList.toggle('active', state.phase4Step === 2);
+
+      const ovTotal = state.overflowBank.reduce((s, x) => s + x.mins, 0);
+      document.getElementById('ov-total-pill').textContent = `${ovTotal}m banked`;
+      const ovWrap = document.getElementById('ov-list-wrap');
+      ovWrap.innerHTML = !state.overflowBank.length
+        ? '<div>No overflow minutes currently banked.</div>'
+        : state.overflowBank.map(o => `<div class="mono" style="display:flex;justify-content:space-between;"><span>From ${o.fromDate}</span><span style="color:var(--amber);">+${o.mins}m</span></div>`).join('');
+    }
+
+    function renderMiniCal(elId, year, monthIdx, blockedArr) {
+      const el = document.getElementById(elId);
+      const firstDow = new Date(year, monthIdx, 1).getDay();
+      const daysInMonth = new Date(year, monthIdx + 1, 0).getDate();
+      let html = '';
+      for (let i = 0; i < firstDow; i++) html += '<div></div>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        const ymd = `${year}-${String(monthIdx + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const blk = blockedArr.includes(ymd);
+        const sprint = year === 2026 && monthIdx === 11 && d <= 14;
+        html += `<button type="button" class="cal-day ${blk ? 'is-blocked' : (sprint ? 'is-sprint' : '')}" onclick="toggleBlocked('${ymd}')">${d}</button>`;
+      }
+      el.innerHTML = html;
+    }
+
+    // -------------------------------------------------------------------------
+    // 13. INTERACTION HANDLERS
+    // -------------------------------------------------------------------------
+    function switchTab(tab) {
+      activeTab = tab;
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function selectDate(ymd) {
+      if (!ymd || ymd < PLAN_START || ymd > EXAM_DATE) return;
+      state.selectedDate = ymd;
+      saveState();
+      renderAll();
+    }
+
+    function shiftDate(delta) {
+      const next = addDays(state.selectedDate, delta);
+      if (next >= PLAN_START && next <= EXAM_DATE) {
+        state.selectedDate = next;
+        saveState();
+        renderAll();
+      }
+    }
+
+    function jumpToToday() {
+      state.selectedDate = getDefaultToday();
+      activeTab = 'today';
+      saveState();
+      renderAll();
+    }
+
+    function jumpToDate(ymd) {
+      state.selectedDate = ymd;
+      activeTab = 'today';
+      saveState();
+      renderAll();
+    }
+
+    function toggleSlot(slotId) {
+      const d = state.selectedDate;
+      const gtData = computeGTSchedule();
+      const btrPlan = computeBtrPlan();
+      const rows = buildTimeline(d, gtData, btrPlan);
+      const row = rows.find(r => r.id === slotId);
+      if (!row || row.fixed) return;
+
+      if (!state.completedSlots[d]) state.completedSlots[d] = {};
+      const existing = state.completedSlots[d][slotId];
+
+      if (existing) {
+        if (Array.isArray(existing.btrDeltas)) {
+          existing.btrDeltas.forEach(dl => {
+            if (state.btr[dl.id]) state.btr[dl.id].watched = Math.max(0, state.btr[dl.id].watched - dl.rawMins);
+          });
+        }
+        delete state.completedSlots[d][slotId];
+      } else {
+        if (row.isBtr && Array.isArray(row.slices) && row.slices.length) {
+          const btrDeltas = [];
+          let addedEbb = 0;
+          row.slices.forEach(sl => {
+            const st = state.btr[sl.id];
+            if (!st) return;
+            const add = Math.min(st.total - st.watched, sl.rawMins);
+            if (add > 0) {
+              st.watched += add;
+              btrDeltas.push({ id: sl.id, rawMins: add });
+            }
+            if (st.watched >= st.total && enrollBtrInEbbinghaus(sl.id, d)) addedEbb++;
+          });
+          state.completedSlots[d][slotId] = { done: true, btrDeltas };
+          const sum = btrDeltas.reduce((a, b) => a + b.rawMins, 0);
+          if (addedEbb > 0) showToast(`Logged +${sum}m BTR & enrolled finished module into Ebbinghaus D+1`, 'cyan');
+          else if (sum > 0) showToast(`Logged +${sum}m into BTR Tracker`, 'sage');
+        } else {
+          state.completedSlots[d][slotId] = { done: true };
+        }
+      }
+      saveState();
+      renderAll();
+    }
+
+    // Inline & Tab Ebbinghaus Add
+    function handleInlineEbbAdd(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const inp = document.getElementById('inline-ebb-input');
+      const topic = inp ? inp.value.trim() : '';
+      if (!topic) return;
+      const d = state.selectedDate;
+      state.ebbinghaus.unshift({
+        id: 'ebb-' + Date.now(),
+        topic,
+        subject: 'Quick Log',
+        baseDate: d,
+        stage: 0,
+        nextDue: addDays(d, 1)
+      });
+      inp.value = '';
+      saveState();
+      renderAll();
+      showToast(`Added "${topic}" — D+1 due tomorrow`, 'cyan');
+    }
+
+    function handleAddEbb(e) {
+      e.preventDefault();
+      const topic = document.getElementById('ebb-f-topic').value.trim();
+      const subject = document.getElementById('ebb-f-subject').value;
+      const studyDate = document.getElementById('ebb-f-date').value || state.selectedDate;
+      if (!topic) return;
+      state.ebbinghaus.unshift({
+        id: 'ebb-' + Date.now(),
+        topic,
+        subject,
+        baseDate: studyDate,
+        stage: 0,
+        nextDue: addDays(studyDate, 1)
+      });
+      document.getElementById('ebb-f-topic').value = '';
+      saveState();
+      renderAll();
+      showToast(`Added "${topic}" (D+1: ${addDays(studyDate, 1).slice(5)})`, 'cyan');
+    }
+
+    function setEbbFilter(f) {
+      ebbFilter = f;
+      renderEbbinghausTab(computeBtrPlan());
+    }
+
+    // BTR Controls
+    function setSpeed(spd) {
+      state.playbackSpeed = spd;
+      saveState();
+      renderAll();
+    }
+
+    function setBtrView(v) {
+      btrView = v;
+      renderBtrTab(computeBtrPlan());
+    }
+
+    function bumpBtr(modId, delta) {
+      const st = state.btr[modId];
+      if (!st) return;
+      const wasDone = st.watched >= st.total;
+      st.watched = Math.max(0, Math.min(st.total, st.watched + delta));
+      if (!wasDone && st.watched >= st.total && enrollBtrInEbbinghaus(modId, state.selectedDate)) {
+        showToast('Module complete! Enrolled in Ebbinghaus D+1', 'cyan');
+      }
+      saveState();
+      renderAll();
+    }
+
+    function toggleBtrDone(modId) {
+      const st = state.btr[modId];
+      if (!st) return;
+      if (st.watched >= st.total) {
+        st.watched = 0;
+      } else {
+        st.watched = st.total;
+        if (enrollBtrInEbbinghaus(modId, state.selectedDate)) {
+          showToast('Module complete! Enrolled in Ebbinghaus D+1', 'cyan');
+        }
+      }
+      saveState();
+      renderAll();
+    }
+
+    function editBtr(modId, field, raw) {
+      const st = state.btr[modId];
+      const val = parseInt(raw, 10);
+      if (!st || isNaN(val)) return;
+      const wasDone = st.watched >= st.total;
+      if (field === 'total') {
+        st.total = Math.max(1, val);
+        st.watched = Math.min(st.watched, st.total);
+      } else {
+        st.watched = Math.max(0, Math.min(st.total, val));
+      }
+      if (!wasDone && st.watched >= st.total && enrollBtrInEbbinghaus(modId, state.selectedDate)) {
+        showToast('Module complete! Enrolled in Ebbinghaus D+1', 'cyan');
+      }
+      saveState();
+      renderAll();
+    }
+
+    // GT Logger & Targets
+    function updateGtPreview() {
+      const att = parseInt(document.getElementById('gt-f-attempts').value, 10);
+      const cor = parseInt(document.getElementById('gt-f-correct').value, 10);
+      const el = document.getElementById('gt-f-preview');
+      if (!isNaN(att) && !isNaN(cor) && att > 0 && cor <= att) {
+        const net = (cor - (att - cor) / 3).toFixed(1);
+        const acc = ((cor / att) * 100).toFixed(1);
+        el.value = `${net} net · ${acc}%`;
+      } else {
+        el.value = '';
+      }
+    }
+
+    function handleAddGT(e) {
+      e.preventDefault();
+      const label = document.getElementById('gt-f-label').value.trim();
+      const date = document.getElementById('gt-f-date').value;
+      const attempts = parseInt(document.getElementById('gt-f-attempts').value, 10);
+      const correct = parseInt(document.getElementById('gt-f-correct').value, 10);
+      const weak = document.getElementById('gt-f-weak').value.trim();
+
+      if (!label || !date || isNaN(attempts) || isNaN(correct) || correct > attempts) {
+        showToast('Please enter valid solved & correct counts', 'terracotta');
+        return;
+      }
+      state.gtLogs.push({ id: 'gt-' + Date.now(), label, date, attempts, correct, weak });
+      state.gtLogs.sort((a, b) => a.date.localeCompare(b.date));
+      document.getElementById('gt-f-label').value = '';
+      document.getElementById('gt-f-attempts').value = '';
+      document.getElementById('gt-f-correct').value = '';
+      document.getElementById('gt-f-preview').value = '';
+      document.getElementById('gt-f-weak').value = '';
+      saveState();
+      renderAll();
+      showToast(`${label} saved to GT Trend Chart`, 'sage');
+    }
+
+    function deleteGT(id) {
+      state.gtLogs = state.gtLogs.filter(g => g.id !== id);
+      saveState();
+      renderAll();
+    }
+
+    function toggleWeeklyCheck(key) {
+      state.weeklyChecks[key] = !state.weeklyChecks[key];
+      saveState();
+      renderTargetsAndGtTab(computeGTSchedule());
+    }
+
+    function handleAddTarget(e) {
+      e.preventDefault();
+      const inp = document.getElementById('target-f-input');
+      const text = inp.value.trim();
+      if (!text) return;
+      state.customTargets.unshift({ id: 'ct-' + Date.now(), text, done: false });
+      inp.value = '';
+      saveState();
+      renderTargetsAndGtTab(computeGTSchedule());
+      showToast('Personal target added', 'sage');
+    }
+
+    function toggleCustomTarget(id) {
+      const t = state.customTargets.find(x => x.id === id);
+      if (t) t.done = !t.done;
+      saveState();
+      renderTargetsAndGtTab(computeGTSchedule());
+    }
+
+    function deleteCustomTarget(id) {
+      state.customTargets = state.customTargets.filter(x => x.id !== id);
+      saveState();
+      renderTargetsAndGtTab(computeGTSchedule());
+    }
+
+    // Blocked Days, Phase 4 Toggle & Overflow
+    function toggleBlocked(ymd) {
+      if (ymd.startsWith('2026-12-')) {
+        const i = state.blockedDec.indexOf(ymd);
+        if (i >= 0) {
+          state.blockedDec.splice(i, 1);
+          showToast(`Unblocked ${ymd}`, 'sage');
+        } else {
+          if (state.blockedDec.length >= 7) {
+            showToast('December limit reached (max 7 blocked days)', 'terracotta');
+            return;
+          }
+          state.blockedDec.push(ymd);
+          state.blockedDec.sort();
+          showToast(`Blocked ${ymd} (${state.blockedDec.length}/7 Dec)`, 'terracotta');
+        }
+      } else if (ymd.startsWith('2027-02-')) {
+        const i = state.blockedFeb.indexOf(ymd);
+        if (i >= 0) {
+          state.blockedFeb.splice(i, 1);
+          showToast(`Unblocked ${ymd}`, 'sage');
+        } else {
+          if (state.blockedFeb.length >= 7) {
+            showToast('February limit reached (max 7 blocked days)', 'terracotta');
+            return;
+          }
+          state.blockedFeb.push(ymd);
+          state.blockedFeb.sort();
+          showToast(`Blocked ${ymd} (${state.blockedFeb.length}/7 Feb) — GTs shifted`, 'terracotta');
+        }
+      }
+      saveState();
+      renderAll();
+    }
+
+    function setPhase4Step(step) {
+      state.phase4Step = step;
+      saveState();
+      renderAll();
+      showToast(`Phase 4 cadence: Every ${step} Days`, 'cyan');
+    }
+
+    function clearOverflow() {
+      state.overflowBank = [];
+      saveState();
+      renderAll();
+      showToast('Overflow Bank cleared', 'sage');
+    }
+
+    // Extra Work Modal
+    function setAdjMins(m) { document.getElementById('adj-mins').value = m; }
+
+    function applyTodayAdjustment() {
+      const mins = Math.max(15, parseInt(document.getElementById('adj-mins').value, 10) || 60);
+      const mode = document.querySelector('input[name="adj-mode"]:checked').value;
+      const d = state.selectedDate;
+
+      let summary = '';
+      if (mode === 'bank') {
+        state.overflowBank.push({ id: 'ov-' + Date.now(), fromDate: d, mins });
+        summary = `Banked ${mins}m to Sunday Overflow Buffer. BTR videos, 45m+20m PYQ, Ebbinghaus & 11 PM curfew remain protected.`;
+      } else {
+        summary = `Compressed lower-priority night slots by ${mins}m. BTR videos, 45m+20m PYQ, Ebbinghaus & 11 PM curfew remain protected.`;
+      }
+
+      state.dayAdjustments[d] = { mins, mode, summary };
+      saveState();
+      closeModal('modal-adjust');
+      renderAll();
+      showToast('Today adjusted cleanly', 'amber');
+    }
+
+    function resetTodayAdjustment() {
+      delete state.dayAdjustments[state.selectedDate];
+      saveState();
+      renderAll();
+      showToast('Restored default blueprint for today', 'sage');
+    }
+
+    // JSON Backup & Reset
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `inicet-may2027-backup-${state.selectedDate}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('JSON backup downloaded', 'sage');
+    }
+
+    function copyJSON() {
+      const ta = document.createElement('textarea');
+      ta.value = JSON.stringify(state, null, 2);
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Backup JSON copied to clipboard', 'sage');
+      } catch (e) {
+        showToast('Clipboard copy failed', 'terracotta');
+      }
+      document.body.removeChild(ta);
+    }
+
+    function importJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (!parsed || typeof parsed !== 'object' || !parsed.btr) throw new Error('Invalid');
+          state = { ...createInitialState(), ...parsed };
+          saveState();
+          renderAll();
+          showToast('Backup restored successfully!', 'sage');
+        } catch (err) {
+          showToast('Invalid JSON backup file', 'terracotta');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function handleResetDefaults() {
+      const btn = document.getElementById('btn-reset-all');
+      if (!resetArmed) {
+        resetArmed = true;
+        btn.textContent = 'Tap again to confirm';
+        setTimeout(() => {
+          resetArmed = false;
+          if (btn) btn.textContent = 'Reset Defaults';
+        }, 3800);
+        return;
+      }
+      state = createInitialState();
+      saveState();
+      resetArmed = false;
+      btn.textContent = 'Reset Defaults';
+      renderAll();
+      showToast('Reset to Nov 24 defaults (98/145 baseline)', 'amber');
+    }
+
+    // -------------------------------------------------------------------------
+    // 14. 45-MIN PYQ / 20-MIN REVIEW TOGGLE PACER
+    // -------------------------------------------------------------------------
+    let pacerMode = 45;
+    let pacerSecs = 45 * 60;
+    let pacerTimer = null;
+
+    function setPacerMode(mins) {
+      pausePacer();
+      pacerMode = mins;
+      pacerSecs = mins * 60;
+      document.getElementById('pacer-m45').classList.toggle('active', mins === 45);
+      document.getElementById('pacer-m20').classList.toggle('active', mins === 20);
+      renderPacer();
+    }
+
+    function renderPacer() {
+      const m = String(Math.floor(pacerSecs / 60)).padStart(2, '0');
+      const s = String(pacerSecs % 60).padStart(2, '0');
+      document.getElementById('pacer-clock').textContent = `${m}:${s}`;
+      const pill = document.getElementById('pacer-pill');
+      if (pacerMode === 45) {
+        const elapsed = 45 * 60 - pacerSecs;
+        const q = Math.min(50, Math.floor(elapsed / 54) + 1);
+        pill.textContent = `Q${q} / 50 · 54s/Q`;
+      } else {
+        pill.textContent = '20m Distractor Review';
+      }
+    }
+
+    function startPacer() {
+      if (pacerTimer) return;
+      pacerTimer = setInterval(() => {
+        if (pacerSecs > 0) {
+          pacerSecs--;
+          renderPacer();
+        } else {
+          pausePacer();
+          showToast(pacerMode === 45 ? '45m PYQ block complete — switch to 20m Review!' : '20m PYQ Review complete!', 'cyan');
+        }
+      }, 1000);
+    }
+
+    function pausePacer() {
+      clearInterval(pacerTimer);
+      pacerTimer = null;
+    }
+
+    function resetPacer() {
+      pausePacer();
+      pacerSecs = pacerMode * 60;
+      renderPacer();
+    }
+
+    // -------------------------------------------------------------------------
+    // 15. MODAL & TOAST UTILITIES
+    // -------------------------------------------------------------------------
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function backdropClose(e, id) {
+      if (e.target.id === id) closeModal(id);
+    }
+
+    function showToast(msg, tone = 'sage') {
+      const stack = document.getElementById('toast-stack');
+      const el = document.createElement('div');
+      el.className = 'toast';
+      const colors = { sage: '#7CB896', amber: '#E5B567', cyan: '#6CB6D9', terracotta: '#DF7A6B', lavender: '#B39DDB', muted: '#9AA3B2' };
+      el.style.borderLeftColor = colors[tone] || colors.sage;
+      el.textContent = msg;
+      stack.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 260);
+      }, 2800);
+    }
+
+    window.addEventListener('load', () => {
+      renderAll();
+      renderPacer();
+    });
+  </script>
+</body>
+</html>
